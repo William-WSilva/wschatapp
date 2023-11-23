@@ -3,11 +3,16 @@ h1 {
 }
 
 form {
-    height: 200px;
+    height: 140px;
     width: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+img {
+    border-radius: 50%;
+    width: 80px;
 }
 
 a {

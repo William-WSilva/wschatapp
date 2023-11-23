@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/config.css' %}">
+    <title>Config</title>
+
+</head>
+<body>
+    <header>
+        <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+        <div class="header-info">
+            <a href="">Trocar Foto</a>
+        </div>
+        <div class="header-nav">
+            <a href="{% url 'config' %}">⚙️</a>
+            <a href="{% url 'perfil-pessoal' %}">🏠</a>
+        </div>
+    </header>
+    <a href="{% url 'login' %}">login</a>
+    <a href="{% url 'cadastro' %}">Cadastrar</a>
+    <a href="{% url 'perfil-pessoal' %}">perfil-pessoal</a>
+    <a href="{% url 'perfil-usuario' %}">perfil-usuario</a>
+    <a href="{% url 'config' %}">config</a>
+    <a href="{% url 'rede' %}">rede</a>
+    <a href="{% url 'post-salvo' %}">post-salvo</a>
+    <a href="{% url 'meu-post' %}">meu-post</a>
+    <a href="{% url 'novo-post' %}">novo-post</a>
+    <hr>
+    <section>
+        <div>
+            <form>
+                <input type="text" placeholder="Nome">
+                <input type="text" placeholder="Sobrenome">
+                <input type="email" placeholder="Email">
+                <input type="password" placeholder="Senha Atual">
+                <input type="password" placeholder="Senha Nova">
+                <input type="password" placeholder="Repita Nova Senha">
+                <a href="{% url 'config' %}">Salvar</a>
+                <a href="{% url 'perfil-pessoal' %}">Sair</a>
+            </form>
+        </div>
+        <div class="config-action">
+            <a href="{% url 'rede' %}">Seguidores</a>
+            <a href="{% url 'post-salvo' %}">Posts Salvos</a>
+            <a href="{% url 'meu-post' %}">Posts Publicados</a>
+        </div>
+    </section>
+</body>
+</html>

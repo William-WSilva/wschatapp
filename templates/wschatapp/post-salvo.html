@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/post-salvo.css' %}">
+    <title>post-salvo</title>
+
+</head>
+<body>
+    <header>
+        <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+        <div class="header-info">
+            <h3>Nome perfil</h3>
+            <h4>Seguindo: <span>1000</span></h4>
+            <h4>Seguidores: <span>1000</span></h4>
+        </div>
+        <div class="header-action">
+            <a href="">++ Novo Post</a>
+        </div>
+        <div class="header-nav">
+            <a href="{% url 'config' %}">⚙️</a>
+            <a href="{% url 'perfil-pessoal' %}">🏠</a>
+        </div>
+    </header>
+    <a href="{% url 'login' %}">login</a>
+    <a href="{% url 'cadastro' %}">Cadastrar</a>
+    <a href="{% url 'perfil-pessoal' %}">perfil-pessoal</a>
+    <a href="{% url 'perfil-usuario' %}">perfil-usuario</a>
+    <a href="{% url 'config' %}">config</a>
+    <a href="{% url 'rede' %}">rede</a>
+    <a href="{% url 'post-salvo' %}">post-salvo</a>
+    <a href="{% url 'meu-post' %}">meu-post</a>
+    <a href="{% url 'novo-post' %}">novo-post</a>
+    <hr>
+    <a href="{% url 'login' %}">login</a>
+    <a href="{% url 'config' %}">config</a>
+</body>
+</html>

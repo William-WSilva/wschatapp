@@ -10,6 +10,11 @@ form {
     justify-content: space-around;
 }
 
+img {
+    border-radius: 50%;
+    width: 80px;
+}
+
 a {
     border: solid 1px #000;
     height: 40px;
