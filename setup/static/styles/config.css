@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 img {
     border-radius: 50%;
@@ -67,6 +72,7 @@ header{
 
 section {
     display: flex;
+    justify-content: center;
 }
 
 .config-action {

@@ -4,8 +4,13 @@
     box-sizing: border-box;
 }
 
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
-img {
+header > img {
     border-radius: 50%;
     width: 80px;
 }
@@ -55,4 +60,59 @@ header{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.post {
+    width: 400px;
+    background-color: lightgray;
+    padding: 8px;
+    margin: 40px 0;
+}
+
+.post-info {
+    display: flex;
+    align-items: end;
+}
+
+.post-info img {
+    width: 40px;
+    border-radius: 50%;
+}
+
+.post-info h4 {
+    width: 200px;
+    height: 100%;
+    margin-left: 8px;
+}
+
+.post textarea {
+    width: 100%;
+    resize: none;
+}
+
+.foto-post {
+    width: 100%;
+    height: 200px;
+}
+
+form {
+    display: flex;
+    height: 40px;
+    margin: 8px 0;
+}
+
+form > textarea {
+    height: 100%;
+    margin: 0;
+}
+
+form > a {
+    height: 100%;
+    margin: 0 0 0 4px;
 }
