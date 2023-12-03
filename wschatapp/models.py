@@ -1,22 +1,17 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)  # Relacionamento um para um com o modelo User padrão
-    nome = models.CharField(max_length=100, null=False, blank=False)  # Campo para o nome do usuário
-    sobrenome = models.CharField(max_length=100, null=False, blank=False)  # Campo para o sobrenome do usuário
-    email = models.EmailField(null=False, blank=False)  # Campo para o email do usuário
+class UsuarioInfo(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    foto_perfil = models.ImageField(upload_to='imagem/%Y/%m/%d/', blank=True)
 
-    def __str__(self):
-        return self.user.username  # Retorna o nome de usuário do modelo User
 
 # Definição do modelo para os Posts
 class Post(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Chave estrangeira para o usuário
     data_hora = models.DateTimeField(auto_now_add=True)  # Data e hora do post
     descricao = models.TextField(null=False, blank=False)  # Descrição do post
-    imagem = models.ImageField(upload_to='images/')  # Campo para imagem do post
+    imagem = models.ImageField(upload_to='imagem/%Y/%m/%d/', blank=True)  # Campo para imagem do post
 
 # Definição do modelo para os Comentários
 class Comentario(models.Model):

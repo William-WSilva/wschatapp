@@ -11,7 +11,7 @@
 <body>
     <div class="container">   
         <header>
-            <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+            <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
             <div class="header-info">
                 <h3>Nome perfil</h3>
                 <h4>Seguindo: <span>1000</span></h4>
@@ -26,36 +26,46 @@
             </div>
         </header>
     </div>
-    <a href="{% url 'login' %}">login</a>
-    <a href="{% url 'cadastro' %}">Cadastrar</a>
-    <a href="{% url 'perfil-pessoal' %}">perfil-pessoal</a>
-    <a href="{% url 'perfil-usuario' %}">perfil-usuario</a>
-    <a href="{% url 'config' %}">config</a>
-    <a href="{% url 'rede' %}">rede</a>
-    <a href="{% url 'post-salvo' %}">post-salvo</a>
-    <a href="{% url 'meu-post' %}">meu-post</a>
-    <a href="{% url 'novo-post' %}">novo-post</a>
     <hr>
     <section>
-        <div class="post">
-            <div class="post-info">
-                <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
-                <h4>Nome Usuario</h4>
-                <h5>Data:</h5>
-            </div>
-            <hr>
-            <textarea cols="30" rows="3" placeholder="Texto:"></textarea>
-            <img class="foto-post" src="{% static 'assets/img/Django.jpg' %}">
-            <form>
-                <textarea rows="1" placeholder="Comentar:"></textarea>
-                <a href="#">📝</a>
-            </form>
-            <div>
-                <a href="#">Curtir</a>
-                <a href="#">Salvar</a>
-                <a href="#">10 comentarios</a>
-            </div>
-        </div>
+        <ul>
+            {% if posts %}
+            {% for post in posts %}
+            <li class="post">
+                <div class="post-info">
+                    <a href="{% url 'perfil-usuario' post.usuario.id %}">
+                        <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+                        <h4>{{ post.usuario }}</h4>
+                    </a>
+                    <h5>Data: {{ post.data_hora }}</h5>
+                </div>
+                <hr>
+                <p>{{ post.descricao }}</p>
+                {% if post.imagem == "" or post.imagem == null %}
+                    <a href="{% url 'post-item' post.id %}">
+                        <img class="foto-post" src="{% static 'assets/img/no-image.jpg'%}">
+                        <span>10 comentarios</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'post-item' post.id %}">
+                        <img class="foto-post" src="{{ post.imagem.url }}">
+                        <span>10 comentarios</span>
+                    </a>
+                {% endif %}
+                <form>
+                    <textarea rows="1" placeholder="Comentar:"></textarea>
+                    <a href="#">📝</a>
+                </form>
+                <div>
+                    <a href="#">Curtir</a>
+                    <a href="#">Salvar</a>
+                </div>
+            </li>
+            {% endfor %}
+            {% else %}
+            {% endif %}
+
+        </ul>
     </section>
 </body>
 </html>
