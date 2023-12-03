@@ -27,9 +27,9 @@ class Curtida(models.Model):
 
 # Definição do modelo para a Rede de Seguidores
 class Rede(models.Model):
-    usuario = models.ForeignKey(User, related_name='usuario', on_delete=models.CASCADE)  # Chave estrangeira para o usuário
-    seguido = models.ForeignKey(User, related_name='seguido', on_delete=models.CASCADE)  # Chave estrangeira para o usuário seguido
-    seguidor = models.ForeignKey(User, related_name='seguidor', on_delete=models.CASCADE)  # Chave estrangeira para o seguidor
+    usuario = models.ForeignKey(User, related_name='usuario', on_delete=models.CASCADE, null=True, blank=True)  # Chave estrangeira para o usuário
+    seguido = models.ForeignKey(User, related_name='seguido', on_delete=models.CASCADE, null=True, blank=True) # Chave estrangeira para o usuário seguido
+    seguidor = models.ForeignKey(User, related_name='seguidor', on_delete=models.CASCADE, null=True, blank=True) # Chave estrangeira para o seguidor
 
 # Definição do modelo para os Posts Salvos
 class PostSalvo(models.Model):

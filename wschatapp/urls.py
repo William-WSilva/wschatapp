@@ -1,14 +1,14 @@
 from django.urls import path
 from wschatapp.views import \
     PerfilPessoal, \
-    PerfilUsuario, Config, Rede, \
+    PerfilUsuario, Config, MinhaRede, \
     PostSalvo, MeuPost, NovoPost, PostItem
 
 urlpatterns = [
     path("perfil-pessoal/", PerfilPessoal, name='perfil-pessoal'),
     path("perfil-usuario/<int:user_id>/", PerfilUsuario, name='perfil-usuario'),
     path("config/", Config, name='config'),
-    path("rede/", Rede, name='rede'),
+    path("rede/", MinhaRede, name='rede'),
     path("post-salvo/", PostSalvo, name='post-salvo'),
     path("meu-post/", MeuPost, name='meu-post'),
     path("novo-post/", NovoPost, name='novo-post'),

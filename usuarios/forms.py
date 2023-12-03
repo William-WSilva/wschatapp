@@ -65,12 +65,34 @@ class CadastroForms(forms.Form):
         )
     )
     senha_check=forms.CharField(
-        label='Nome Usuario',
+        label='Confirmar Senha',
         required=True,
         max_length=100,
         widget=forms.PasswordInput(
             attrs={
-                'placeholder': "Confirmar Senha "
+                'placeholder': "Confirmar Senha"
             }
         )
     )
+
+    # Validar nome de cadastro sem espaços
+    def clean_nome_usuario(self):
+        nome = self.cleaned_data.get('nome_usuario')
+
+        if nome:
+            nome = nome.strip()
+            if ' ' in nome:
+                raise forms.ValidationError('O nome usuario não pode ter espaços')
+            else:
+                return nome
+
+    # Validar igualdade de senha de cadastro
+    def clean_senha_check(self):
+        senha = self.cleaned_data.get('senha')
+        senha_check = self.cleaned_data.get('senha_check')
+
+        if senha and senha_check:
+            if senha != senha_check:
+                raise forms.ValidationError('Senhas não iguais')
+            else:
+                return senha_check

@@ -13,7 +13,7 @@
         <header>
             <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
             <div class="header-info">
-                <h3>Perfil: {{ user.username }}</h3>
+                <h3>Perfil Usuario: {{ user.username }}</h3>
                 <h4>Seguindo: <span>1000</span></h4>
                 <h4>Seguidores: <span>1000</span></h4>
             </div>
@@ -34,7 +34,11 @@
             {% for post in postsuser %}
             <li class="post">
                 <div class="post-info">
-                    <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+                    {% if usuario_info %}
+                        <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
+                    {% else %}
+                        <img src="{% static 'assets/img/foto_padrao.jpg' %}" alt="Foto padrão">
+                    {% endif %}
                     <a href="{% url 'perfil-usuario' post.usuario.id %}"><h4>{{ post.usuario }}</h4></a>
                     <h5>Data: {{ post.data_hora }}</h5>
                 </div>

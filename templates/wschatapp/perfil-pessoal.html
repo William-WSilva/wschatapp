@@ -13,7 +13,7 @@
         <header>
             <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
             <div class="header-info">
-                <h3>Nome perfil</h3>
+                <h3>{{ usuario.username }}</h3>
                 <h4>Seguindo: <span>1000</span></h4>
                 <h4>Seguidores: <span>1000</span></h4>
             </div>
@@ -26,6 +26,11 @@
             </div>
         </header>
     </div>
+    {% for message in messages %}
+    <div>
+        <p id="messages">{{ message }}</p>
+    </div>
+    {% endfor %}
     <hr>
     <section>
         <ul>
@@ -34,7 +39,7 @@
             <li class="post">
                 <div class="post-info">
                     <a href="{% url 'perfil-usuario' post.usuario.id %}">
-                        <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+                        <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto de perfil">
                         <h4>{{ post.usuario }}</h4>
                     </a>
                     <h5>Data: {{ post.data_hora }}</h5>

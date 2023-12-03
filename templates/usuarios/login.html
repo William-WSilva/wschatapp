@@ -11,6 +11,7 @@
 <body>
     <h1>Login</h1>
     <hr>
+    {% include 'partials/_alertas.html' %}
     <form action="{% url 'login' %}" method="POST">
         {% csrf_token %}   <!-- segurança de formularios -->
         {% for field in form.visible_fields %}

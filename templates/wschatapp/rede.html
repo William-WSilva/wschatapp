@@ -13,7 +13,7 @@
         <header>
             <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
             <div class="header-info">
-                <h3>Nome perfil</h3>
+                <h3>{{ usuario.username }}</h3>
                 <h4>Seguindo: <span>1000</span></h4>
                 <h4>Seguidores: <span>1000</span></h4>
             </div>
@@ -32,16 +32,19 @@
         <div>
             <h3>Seguindo</h3>
             <ul>
-                <li>Usuario 1</li>
-                <li>Usuario 2</li>
+                {% for seguindo in seguidos %}
+                    <li>{{ seguindo.seguido.username }}</li>
+                {% endfor %}
             </ul>
-        </div>
-        <div>
-            <h3>Seguidores</h3>
-            <ul>
-                <li>Usuario 1</li>
-                <li>Usuario 2</li>
-            </ul>
+            </div>
+            <div>
+                <h3>Seguidores</h3>
+                <ul>
+                    {% for seguidor in seguidores %}
+                        <li>{{ seguidor.seguidor.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </section>
 </body>
