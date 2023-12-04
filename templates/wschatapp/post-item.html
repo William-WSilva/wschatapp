@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/post-item.css' %}">
+    <title>Postitem</title>
+
+</head>
+<body>
+    <div class="container">   
+        <header>
+            <img src="{{ usuario_info.foto_perfil.url }}">
+            <div class="header-info">
+                <h3>Nome perfil: {{ usuario_info.usuario }}</h3>
+                <h4>Seguindo: <span>1000</span></h4>
+                <h4>Seguidores: <span>1000</span></h4>
+            </div>
+            <div class="header-action">
+                <a href="">++ Novo Post</a>
+            </div>
+            <div class="header-nav">
+                <a href="{% url 'config' %}">⚙️</a>
+                <a href="{% url 'perfil-pessoal' %}">🏠</a>
+            </div>
+        </header>
+    </div>
+
+    <hr>
+    <section>
+        <ul>
+            <li class="post">
+                <div class="post-info">
+                    <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
+                    <h4>{{ post.usuario }}</h4>
+                    <h5>Data: {{ post.data_hora }}</h5>
+                </div>
+                <hr>
+                <p>{{ post.descricao }}</p>
+                {% if post.imagem == "" or post.imagem == null %}
+                        <img class="foto-post" src="{% static 'assets/img/no-image.jpg'%}">
+                        <span>10 comentarios</span>
+                {% else %}
+                        <img class="foto-post" src="{{ post.imagem.url }}">
+                        <span>10 comentarios</span>
+                {% endif %}
+                <form method="POST" action="{% url 'comentar-post' post.id %}">
+                    {% csrf_token %}
+                    <textarea name="comentario" rows="1" placeholder="Comentar:"></textarea>
+                    <button type="submit">📝 Comentar</button>
+                </form>
+                <div>
+                    <a href="#">Curtir</a>
+                    {% if post.id in posts_salvos %}
+                        <button>Salvo</button>
+                    {% else %}
+                        <a href="{% url 'salvar-post' post.id %}">Salvar</a>
+                    {% endif %}
+                </div>
+            </li>
+        </ul>
+        <div class="tabs">
+            <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab1" checked>
+            <label for="tab1" class="tabs-label">📝 Comentários</label>
+            <div class="tabs-content">
+                <ul>
+                    {% for comentario in comentarios_post %}
+                        <div class="card-usuario">
+                            <a href="{% url 'perfil-usuario' comentario.usuario.id %}">
+                                <img src="{{ comentario.usuario.usuarioinfo.foto_perfil.url }}" alt="">
+                            </a>
+                            <li>{{ comentario.usuario }}: {{ comentario.comentario }}</li>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab2" checked>
+            <label for="tab2" class="tabs-label">👍 Curtidas</label>
+            <div class="tabs-content">
+                {% for curtida in curtidas_post %}
+                        <div class="card-usuario">
+                            <a href="{% url 'perfil-usuario' curtida.usuario.id %}">
+                                <img src="{{ curtida.usuario.usuarioinfo.foto_perfil.url }}" alt="">
+                            </a>
+                            <li>{{ curtida.usuario }}</li>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+
+
+
+
+
+
+        
+    </section>
+</body>
+</html>

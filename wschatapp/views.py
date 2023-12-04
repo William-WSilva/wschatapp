@@ -1,11 +1,12 @@
 from itertools import chain
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from usuarios.forms import CadastroForms
-from wschatapp.models import Post, Rede, UsuarioInfo, PostSalvo
+from wschatapp.models import Comentario, Curtida, Post, Rede, UsuarioInfo, PostSalvo
 
 
 def PerfilPessoal(request):
@@ -17,18 +18,34 @@ def PerfilPessoal(request):
     usuario = request.user
     usuario_info = UsuarioInfo.objects.get(usuario=request.user)
     
-    # Minhas postagens
-    minhas_postagens = Post.objects.filter(usuario=usuario)
-
     # Lista de usuarios que sigo
     usuarios_seguidos = Rede.objects.filter(usuario=usuario).values_list('seguido', flat=True)
-
+    # Minhas postagens
+    minhas_postagens = Post.objects.filter(usuario=usuario)
     # postagens de quem sigo
     postagens_seguidos = Post.objects.filter(usuario__in=usuarios_seguidos)
-
     # Minhas postagens + postagens de quem sigo, ordenadas por data e hora
     posts = sorted(list(chain(minhas_postagens, postagens_seguidos)), key=lambda post: post.data_hora, reverse=True)
-    return render(request, 'wschatapp/perfil-pessoal.html', {'posts': posts, 'usuario_info': usuario_info, 'usuario': usuario})
+    for post in posts:post.qtd_comentarios = Comentario.objects.filter(post=post).count() # Add qtd comentarios de cada post
+    for post in posts:post.qtd_curtidas = Curtida.objects.filter(post=post).count() # Add qtd comentarios de cada post
+
+    # Verifica se o post já está salvo pelo usuário atual
+    posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True)
+    # Verifica se o post já está salvo pelo usuário atual
+    posts_curtidos = Curtida.objects.filter(usuario=usuario).values_list('post__id', flat=True)
+
+    qtd_seguidos = Rede.objects.filter(usuario=usuario).exclude(seguido__isnull=True).values_list('seguido').count()
+    qtd_seguidores = Rede.objects.filter(usuario=usuario).exclude(seguidor__isnull=True).values_list('seguidor').count()
+
+
+    return render(request, 'wschatapp/perfil-pessoal.html', 
+        {'posts': posts, 
+         'usuario_info': usuario_info, 
+         'usuario': usuario,
+         'posts_salvos': posts_salvos,
+         'posts_curtidos': posts_curtidos,
+         'qtd_seguidos': qtd_seguidos,
+         'qtd_seguidores': qtd_seguidores,})
 
 
 def PerfilUsuario(request, user_id):
@@ -156,12 +173,21 @@ def PostItem(request, post_id):
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
         return redirect('login')
-    postitem = get_object_or_404(Post, pk=post_id)
-
+    
+    post = get_object_or_404(Post, pk=post_id)
     usuario = request.user
     usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+    # Verifica se o post já está salvo pelo usuário atual
+    posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True)
+    comentarios_post = Comentario.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo')
+    curtidas_post = Curtida.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo')
 
-    return render(request, 'wschatapp/postitem.html', {'postitem': postitem})
+    return render(request, 'wschatapp/post-item.html', 
+        {'usuario_info': usuario_info, 
+         'post': post, 
+         'posts_salvos': posts_salvos,
+         'comentarios_post': comentarios_post,
+         'curtidas_post': curtidas_post})
 
 
 def SalvarPost(request, post_id):
@@ -177,6 +203,19 @@ def SalvarPost(request, post_id):
 
     # Redireciona de volta para alguma página após salvar o post
     return redirect('perfil-pessoal')
+
+
+def NaoSalvarPost(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+
+    # Obtém o post salvo pelo ID do post e pelo usuário atual
+    post_salvo = get_object_or_404(PostSalvo, post_id=post_id, usuario=request.user)
+    post_salvo.delete() # Remove o post salvo
+
+    return redirect('posts-salvos')
 
 
 def PostsSalvos(request):
@@ -229,3 +268,46 @@ def BuscarUsuarios(request):
     usuariosrede = UsuarioInfo.objects.all()
 
     return render(request, 'wschatapp/buscar-usuarios.html', {'usuario_info': usuario_info, 'usuario': usuario, 'usuariosrede': usuariosrede})
+
+def ComentarPost(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    # Verifique se o método de requisição é POST
+    if request.method == 'POST':
+        # Obtenha o post relacionado ao post_id ou retorne um erro 404 se não existir
+        post = get_object_or_404(Post, pk=post_id)
+
+        # Capture o texto do comentário do formulário
+        comentario_texto = request.POST.get('comentario')
+
+        # Verifique se o campo de comentário não está vazio
+        if not comentario_texto:
+            messages.error(request, 'O campo de comentário está vazio.')
+            return redirect('perfil-pessoal')  # Redirecione para onde for apropriado
+
+        # Crie e salve um novo objeto Comentario
+        novo_comentario = Comentario.objects.create(
+            usuario=request.user,
+            post=post,
+            comentario=comentario_texto
+        )
+        messages.success(request, 'Comentário adicionado com sucesso.')
+
+        # Redirecione para a página do post após o comentário ser salvo com sucesso
+        return redirect('post-item', post_id=post_id)
+
+def CurtirPost(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    post = get_object_or_404(Post, pk=post_id) # Obtém o post com base no ID recebido ou retorna um erro 404 se não existir
+    Curtida.objects.create(usuario=request.user, post=post)
+    messages.success(request, 'Post curtido com sucesso')
+
+    # Redireciona de volta para a página de onde veio
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
