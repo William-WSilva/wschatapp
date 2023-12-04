@@ -2,7 +2,7 @@ from django.urls import path
 from wschatapp.views import \
     PerfilPessoal, \
     PerfilUsuario, Config, MinhaRede, \
-    PostSalvo, MeuPost, NovoPost, PostItem
+    PostSalvo, MeusPosts, NovoPost, PostItem
 
 urlpatterns = [
     path("perfil-pessoal/", PerfilPessoal, name='perfil-pessoal'),
@@ -10,7 +10,7 @@ urlpatterns = [
     path("config/", Config, name='config'),
     path("rede/", MinhaRede, name='rede'),
     path("post-salvo/", PostSalvo, name='post-salvo'),
-    path("meu-post/", MeuPost, name='meu-post'),
+    path("meus-posts/", MeusPosts, name='meus-posts'),
     path("novo-post/", NovoPost, name='novo-post'),
     path("post-item/<int:post_id>", PostItem, name='post-item'),
 ]

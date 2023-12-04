@@ -69,8 +69,6 @@ def cadastro(request):
                 usuario_info = UsuarioInfo.objects.create(usuario=usuario, foto_perfil=caminho_imagem_padrao)
             usuario_info.save()  # Salva alterações na tabela UsuarioInfo
 
-
-
             messages.success(request, 'Cadastro realizado com sucesso')
             return redirect('login') # Redireciona para a rota login
         

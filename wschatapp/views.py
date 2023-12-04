@@ -1,8 +1,10 @@
 from itertools import chain
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from usuarios.forms import CadastroForms
 from wschatapp.models import Post, Rede, UsuarioInfo
 
 
@@ -46,7 +48,46 @@ def Config(request):
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
         return redirect('login')
-    return render(request, 'wschatapp/config.html')
+    
+    usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+
+    # Preenche o formulário com os dados do usuário
+    form = CadastroForms(request.POST or None, initial={
+        'nome_usuario': usuario.username,
+        'sobrenome': usuario.last_name,
+        'email': usuario.email,
+    })
+    senha_form = PasswordChangeForm(user=usuario)
+
+    if request.method == 'POST':
+        form = CadastroForms(request.POST, request.FILES)
+
+        if form.is_valid():
+            usuario.username = form.cleaned_data['nome_usuario']
+            usuario.last_name = form.cleaned_data['sobrenome']
+            usuario.email = form.cleaned_data['email']
+            nova_senha = form.cleaned_data['senha']
+            
+            if nova_senha:
+                usuario.set_password(nova_senha)
+                usuario.save()
+            else:
+                usuario.save()
+
+           # Atualiza a imagem de perfil na tabela UsuarioInfo
+            foto_perfil = request.FILES.get('foto_perfil')
+            if foto_perfil:
+                usuario_info.foto_perfil = foto_perfil
+                usuario_info.save()
+
+            # Atualiza a sessão do usuário após a alteração de senha
+            update_session_auth_hash(request, usuario)
+
+            messages.success(request, 'Informações atualizadas com sucesso')
+            return redirect('config')
+
+    return render(request, 'wschatapp/config.html', {'usuario_info': usuario_info, 'form': form, 'usuario': usuario})
 
 
 def MinhaRede(request):
@@ -56,9 +97,11 @@ def MinhaRede(request):
         return redirect('login')
     
     usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
     seguidores = Rede.objects.filter(usuario=usuario).select_related('seguidor')
     seguidos = Rede.objects.filter(usuario=usuario).select_related('seguido')
-    return render(request, 'wschatapp/rede.html', {'seguidos': seguidos,'seguidores': seguidores, 'usuario':usuario})
+
+    return render(request, 'wschatapp/rede.html', {'seguidos': seguidos,'seguidores': seguidores, 'usuario':usuario, 'usuario_info': usuario_info})
 
 
 def PostItem(request, post_id):
@@ -67,6 +110,10 @@ def PostItem(request, post_id):
         messages.error(request, 'Usuario não logado')
         return redirect('login')
     postitem = get_object_or_404(Post, pk=post_id)
+
+    usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+
     return render(request, 'wschatapp/postitem.html', {'postitem': postitem})
 
 
@@ -75,15 +122,23 @@ def PostSalvo(request):
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
         return redirect('login')
+    
+    usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+
     return render(request, 'wschatapp/post-salvo.html')
 
 
-def MeuPost(request):
+def MeusPosts(request):
     # Se usuario não logado retorna para login
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
         return redirect('login')
-    return render(request, 'wschatapp/meu-post.html')
+    
+    usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+    posts = Post.objects.filter(usuario=usuario)
+    return render(request, 'wschatapp/meus-posts.html', {'posts': posts, 'usuario_info': usuario_info, 'usuario': usuario})
 
 
 def NovoPost(request):
@@ -91,4 +146,8 @@ def NovoPost(request):
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
         return redirect('login')
+    
+    usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+
     return render(request, 'wschatapp/novo-post.html')

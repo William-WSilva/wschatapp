@@ -16,8 +16,8 @@ img {
 }
 
 form {
-    height: 300px;
-    width: 400px;
+    height: 400px;
+    width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;

@@ -11,9 +11,9 @@
 <body>
     <div class="container">
         <header>
-            <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+            <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
             <div class="header-info">
-                <a href="">Trocar Foto</a>
+                
             </div>
             <div class="header-nav">
                 <a href="{% url 'config' %}">⚙️</a>
@@ -24,21 +24,31 @@
     <hr>
     <section>
         <div>
-            <form>
-                <input type="text" placeholder="Nome">
-                <input type="text" placeholder="Sobrenome">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Senha Atual">
-                <input type="password" placeholder="Senha Nova">
-                <input type="password" placeholder="Repita Nova Senha">
-                <a href="{% url 'config' %}">Salvar</a>
+            <form action="{% url 'config' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                    {% if field.name != 'nome_usuario' %}
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <div>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Campo de entrada para o nome de usuário desabilitado -->
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" value="{{ usuario.username }}" readonly>
+                    {% endif %}
+                {% endfor %}
+                <button type="submit">Salvar</button>
                 <a href="{% url 'logout' %}">Sair</a>
             </form>
         </div>
         <div class="config-action">
             <a href="{% url 'rede' %}">Seguidores</a>
             <a href="{% url 'post-salvo' %}">Posts Salvos</a>
-            <a href="{% url 'meu-post' %}">Posts Publicados</a>
+            <a href="{% url 'meus-posts' %}">Posts Publicados</a>
         </div>
     </section>
 </body>
