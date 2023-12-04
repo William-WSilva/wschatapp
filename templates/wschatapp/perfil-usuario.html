@@ -18,7 +18,11 @@
                 <h4>Seguidores: <span>1000</span></h4>
             </div>
             <div class="header-action">
-                <a href="">+ Seguir</a>
+                {% if esta_seguindo %}
+                    <a href="{% url 'nao-seguir-usuario' user.id %}">- Não Seguir</a>
+                {% else %}
+                    <a href="{% url 'seguir-usuario' user.id %}">+ Seguir</a>
+                {% endif %}
             </div>
             <div class="header-nav">
                 <a href="{% url 'config' %}">⚙️</a>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/rede.css' %}">
-    <title>rede</title>
+    <title>Buscar Usuarios</title>
 
 </head>
 <body>
@@ -29,33 +29,20 @@
 
     <hr>
     <section>
-        <div>
-            <h3>Seguindo</h3>
+            <h3>Buscar Usuarios</h3>
+            <form>
+                <input type="search">
+            </form>
             <ul>
-                {% for seguido in seguidos %}
-                    <a href="{% url 'perfil-usuario' seguido.id %}">
-                        <div class="card-usuario">
-                            <img src="{{ seguido.foto_perfil.url }}" alt="">
-                            <li>{{ seguido.usuario }}</li>
-                        </div>
-                    </a>
+                {% for usuario in usuariosrede %}
+                    <div class="card-usuario">
+                        <a href="{% url 'perfil-usuario' usuario.usuario.id %}">
+                            <img src="{{ usuario.foto_perfil.url }}" alt="">
+                        </a>
+                        <li>{{ usuario.usuario }}</li>
+                    </div>
                 {% endfor %}
             </ul>
-            </div>
-            <div>
-                <h3>Seguidores</h3>
-                <ul>
-                    {% for seguidor in seguidores %}
-                    <a href="{% url 'perfil-usuario' seguidor.id %}">
-                        <div class="card-usuario">
-                            <img src="{{ seguidor.foto_perfil.url }}" alt="">
-                            <li>{{ seguidor.usuario }}</li>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
     </section>
 </body>
 </html>

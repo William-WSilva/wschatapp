@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from usuarios.forms import CadastroForms
-from wschatapp.models import Post, Rede, UsuarioInfo
+from wschatapp.models import Post, Rede, UsuarioInfo, PostSalvo
 
 
 def PerfilPessoal(request):
@@ -40,7 +40,50 @@ def PerfilUsuario(request, user_id):
     user = get_object_or_404(User, pk=user_id)
     postsuser = Post.objects.filter(usuario=user)
     usuario_info = UsuarioInfo.objects.get(usuario=user)
-    return render(request, 'wschatapp/perfil-usuario.html', {'postsuser': postsuser, 'usuario_info': usuario_info, 'user': user})
+
+    usuario_atual = request.user
+    esta_seguindo = Rede.objects.filter(usuario=usuario_atual, seguido=user).exists()
+    
+    return render(request, 'wschatapp/perfil-usuario.html', 
+        {'postsuser': postsuser, 
+         'usuario_info': usuario_info, 
+         'user': user, 'esta_seguindo': esta_seguindo
+        }
+    )
+
+
+
+def SeguirUsuario(request, user_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+
+    usuario_a_seguir = get_object_or_404(User, pk=user_id)
+    usuario_atual = request.user
+    # Verifica se o usuário atual já está seguindo o usuario_a_seguir
+    if not Rede.objects.filter(usuario=usuario_atual, seguido=usuario_a_seguir).exists():
+        Rede.objects.create(usuario=usuario_atual, seguido=usuario_a_seguir)
+
+    # Redireciona de volta para o perfil do usuário que foi seguido
+    return redirect('perfil-usuario', user_id=user_id)
+
+
+def NaoSeguirUsuario(request, user_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    usuario_nao_seguir = get_object_or_404(User, pk=user_id)
+    usuario_atual = request.user
+    # Verifica se o usuário atual está seguindo o usuario_nao_seguir
+    if Rede.objects.filter(usuario=usuario_atual, seguido=usuario_nao_seguir).exists():
+        Rede.objects.filter(usuario=usuario_atual, seguido=usuario_nao_seguir).delete()
+
+    # Redireciona de volta para o perfil do usuário que foi seguido
+    return redirect('perfil-usuario', user_id=user_id)
+
 
 
 def Config(request):
@@ -98,8 +141,12 @@ def MinhaRede(request):
     
     usuario = request.user
     usuario_info = UsuarioInfo.objects.get(usuario=usuario)
-    seguidores = Rede.objects.filter(usuario=usuario).select_related('seguidor')
-    seguidos = Rede.objects.filter(usuario=usuario).select_related('seguido')
+
+    lista_seguidos = Rede.objects.filter(usuario=usuario).values_list('seguido', flat=True)
+    seguidos = UsuarioInfo.objects.filter(id__in=lista_seguidos)
+
+    lista_seguidores = Rede.objects.filter(usuario=usuario).values_list('seguidor', flat=True)
+    seguidores = UsuarioInfo.objects.filter(id__in=lista_seguidores)
 
     return render(request, 'wschatapp/rede.html', {'seguidos': seguidos,'seguidores': seguidores, 'usuario':usuario, 'usuario_info': usuario_info})
 
@@ -117,7 +164,22 @@ def PostItem(request, post_id):
     return render(request, 'wschatapp/postitem.html', {'postitem': postitem})
 
 
-def PostSalvo(request):
+def SalvarPost(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    # Obtém o post com base no ID recebido
+    postitem = Post.objects.get(id=post_id)
+    # Cria uma entrada na tabela PostSalvo para salvar o post para o usuário atual
+    PostSalvo.objects.create(usuario=request.user, post=postitem)
+
+    # Redireciona de volta para alguma página após salvar o post
+    return redirect('perfil-pessoal')
+
+
+def PostsSalvos(request):
     # Se usuario não logado retorna para login
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
@@ -125,8 +187,10 @@ def PostSalvo(request):
     
     usuario = request.user
     usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+    ids_posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True) # Obtém os IDs dos posts salvos pelo usuário atual
+    posts = Post.objects.filter(id__in=ids_posts_salvos) # Obtém os detalhes dos posts salvos pelo usuário atual
 
-    return render(request, 'wschatapp/post-salvo.html')
+    return render(request, 'wschatapp/posts-salvos.html', {'usuario': usuario ,'usuario_info': usuario_info, 'posts': posts})
 
 
 def MeusPosts(request):
@@ -151,3 +215,17 @@ def NovoPost(request):
     usuario_info = UsuarioInfo.objects.get(usuario=usuario)
 
     return render(request, 'wschatapp/novo-post.html')
+
+
+def BuscarUsuarios(request):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    usuario = request.user
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+
+    usuariosrede = UsuarioInfo.objects.all()
+
+    return render(request, 'wschatapp/buscar-usuarios.html', {'usuario_info': usuario_info, 'usuario': usuario, 'usuariosrede': usuariosrede})

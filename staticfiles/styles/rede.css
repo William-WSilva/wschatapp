@@ -72,3 +72,13 @@ section div {
     width: 100%;
     text-align: center;
 }
+
+.card-usuario {
+    display: flex;
+    width: 300px;
+    border: solid 1px #000;
+}
+
+.card-usuario img {
+    width: 40px;
+}

@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'styles/perfil-pessoal.css' %}">
-    <title>perfil-pessoal</title>
+    <link rel="stylesheet" href="{% static 'styles/post-salvo.css' %}">
+    <title>post-salvo</title>
 
 </head>
 <body>
-    <div class="container">   
+    <div class="container">
         <header>
             <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
             <div class="header-info">
@@ -18,19 +18,15 @@
                 <h4>Seguidores: <span>1000</span></h4>
             </div>
             <div class="header-action">
-                <a href="{% url 'novo-post' %}">++ Novo Post</a>
+                <a href="">++ Novo Post</a>
             </div>
             <div class="header-nav">
                 <a href="{% url 'config' %}">⚙️</a>
                 <a href="{% url 'perfil-pessoal' %}">🏠</a>
             </div>
         </header>
-    </div>
-    {% for message in messages %}
-    <div>
-        <p id="messages">{{ message }}</p>
-    </div>
-    {% endfor %}
+    </div>    
+
     <hr>
     <section>
         <ul>
