@@ -2,6 +2,7 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    /* border: solid 1px #000; */
 }
 
 .container {
@@ -65,7 +66,8 @@ header{
 section {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 .post {
@@ -73,6 +75,7 @@ section {
     background-color: lightgray;
     padding: 8px;
     margin: 40px 0;
+    
 }
 
 .post-info {
@@ -93,28 +96,27 @@ section {
 
 .post textarea {
     width: 100%;
-    resize: none;
+    resize: vertical;
 }
 
 .foto-post {
     width: 100%;
     height: 200px;
-    margin-bottom: 4px;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    height: 100px;
     margin: 8px 0;
 }
 
 form > textarea {
-    height: 100%;
+    height: 100px;
     margin: 0;
+    text-align: start;
 }
 
-form > a {
-    height: 100%;
-    margin: 0 0 0 4px;
+
+form img {
+    margin: 12px 0;
 }

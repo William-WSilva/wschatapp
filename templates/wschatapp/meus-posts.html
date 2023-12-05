@@ -57,8 +57,8 @@
                             <a href="#">📝</a>
                         </form>
                         <div>
-                            <a href="#">Curtir</a>
-                            <a href="#">Salvar</a>
+                            <a href="{% url 'editar-post' post.id %}">Editar</a>
+                            <a href="{% url 'deletar-post' post.id %}">Deletar</a>
                         </div>
                     </li>
                 {% endfor %}

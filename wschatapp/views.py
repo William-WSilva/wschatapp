@@ -1,5 +1,5 @@
 from itertools import chain
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
@@ -249,11 +249,77 @@ def NovoPost(request):
     if not request.user.is_authenticated:
         messages.error(request, 'Usuario não logado')
         return redirect('login')
-    
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
-
     return render(request, 'wschatapp/novo-post.html')
+
+
+def SalvarPostNovo(request):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    if request.method == 'POST':
+        descricao = request.POST.get('descricao')
+        imagem = request.FILES.get('imagem')
+
+        # Crie um novo post com os dados recebidos
+        novo_post = Post(usuario=request.user, descricao=descricao, imagem=imagem)
+        novo_post.save()
+
+        return redirect('perfil-pessoal')
+    
+    messages.error(request, 'Post não foi salvo')
+    return render(request, 'wschatapp/novo-post.html')
+
+def EditarPost(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    post = get_object_or_404(Post, pk=post_id)
+
+    return render(request, 'wschatapp/editar-post.html', {'post': post})
+
+
+def SalvarPostEditado(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        descricao = request.POST.get('descricao')
+        imagem = request.FILES.get('imagem')
+        
+        # Verifique se a descrição está presente
+        if not descricao:
+            return HttpResponseBadRequest('A descrição não pode estar vazia.')
+        
+        post.descricao = descricao
+        if imagem:
+            if imagem.content_type.startswith('image'):
+                post.imagem = imagem
+            else:
+                return HttpResponseBadRequest('O arquivo enviado não é uma imagem válida.')
+        post.save() # Salve as alterações no post
+        
+        return redirect('perfil-pessoal')
+
+    return render(request, 'wschatapp/perfil-pessoal.html')
+
+def DeletarPost(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    post = get_object_or_404(Post, pk=post_id)
+    post.delete()
+
+    return redirect('perfil-pessoal')
+
 
 
 def BuscarUsuarios(request):

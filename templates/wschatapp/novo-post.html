@@ -17,9 +17,6 @@
                 <h4>Seguindo: <span>1000</span></h4>
                 <h4>Seguidores: <span>1000</span></h4>
             </div>
-            <div class="header-action">
-                <a href="">++ Novo Post</a>
-            </div>
             <div class="header-nav">
                 <a href="{% url 'config' %}">⚙️</a>
                 <a href="{% url 'perfil-pessoal' %}">🏠</a>
@@ -35,20 +32,15 @@
                 <h5>Data:</h5>
             </div>
             <hr>
-            <textarea cols="30" rows="3" placeholder="Texto:"></textarea>
-            <div>
-                <img class="foto-post" src="{% static 'assets/img/Django.jpg' %}">
-                <a href="">Add Foto</a>
-            </div>
-            <form>
-                <textarea rows="1" placeholder="Comentar:"></textarea>
-                <a href="#">📝</a>
+            <form action="{% url 'salvar-post-novo' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div>
+                    <label>Escolher Foto</label>
+                    <input type="file" name="imagem"> <!-- Campo para escolher o arquivo de imagem -->
+                </div>
+                <textarea cols="30" rows="10" placeholder="Descrição Postagem:" name="descricao"></textarea>
+                <button type="submit">Publicar</button>
             </form>
-            <div>
-                <a href="#">Curtir</a>
-                <a href="#">Salvar</a>
-                <a href="#">10 comentarios</a>
-            </div>
         </div>
     </section>
 </body>
