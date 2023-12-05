@@ -42,7 +42,7 @@
                                 <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto de perfil">
                                 <h4>{{ post.usuario }}</h4>
                             </a>
-                            <h5>Data: {{ post.data_hora }}</h5>
+                            <h5>Data: {{ post.data_hora|date:"d/m/y H:i" }}</h5>
                         </div>
                         <hr>
                         <p>{{ post.descricao }}</p>
@@ -66,15 +66,15 @@
                         </form>
                         <div>
                             {% if post.id in posts_curtidos %}
-                                <button>Curtiu</button>
+                                <a href="{% url 'nao-curtir' post.id %}">Curtido</a>
                             {% else %}
                                 <a href="{% url 'curtir-post' post.id %}">Curtir</a>
                             {% endif %}
                             
                             {% if post.id in posts_salvos %}
-                                <button>Salvo</button>
+                                <a href="{% url 'nao-salvar-post' post.id %}">Salvo</a>
                             {% else %}
-                                <a href="{% url 'salvar-post' post.id %}">Salvar</a>
+                                <a href="{% url 'salvar-post' post.id %}">+ Salvar</a>
                             {% endif %}
                         </div>
                     </li>

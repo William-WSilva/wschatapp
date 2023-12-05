@@ -30,8 +30,10 @@
     <hr>
     <section>
             <h3>Buscar Usuarios</h3>
-            <form>
-                <input type="search">
+            <form action="{% url 'pesquisar-usuarios' %}" method="POST">
+                {% csrf_token %}
+                <input type="search" name="texto-pesquisa">
+                <button type="submit">Pesquisar</button>
             </form>
             <ul>
                 {% for usuario in usuariosrede %}

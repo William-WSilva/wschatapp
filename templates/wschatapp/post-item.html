@@ -26,7 +26,6 @@
             </div>
         </header>
     </div>
-
     <hr>
     <section>
         <ul>
@@ -60,41 +59,46 @@
                 </div>
             </li>
         </ul>
+    </section>
+    <section>
         <div class="tabs">
             <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab1" checked>
             <label for="tab1" class="tabs-label">📝 Comentários</label>
             <div class="tabs-content">
-                <ul>
+                <ul class="comentarios-list">
                     {% for comentario in comentarios_post %}
-                        <div class="card-usuario">
-                            <a href="{% url 'perfil-usuario' comentario.usuario.id %}">
-                                <img src="{{ comentario.usuario.usuarioinfo.foto_perfil.url }}" alt="">
-                            </a>
-                            <li>{{ comentario.usuario }}: {{ comentario.comentario }}</li>
-                        </div>
+                        <li>
+                            <details>
+                                <summary>
+                                    <a href="{% url 'perfil-usuario' comentario.usuario.id %}">
+                                        <img src="{{ comentario.usuario.usuarioinfo.foto_perfil.url }}" alt="">
+                                    </a>
+                                    {{ comentario.usuario }}: ...
+                                    {% if comentario.usuario == usuario %}
+                                        <a href="{% url 'deletar-comentario' comentario.id %}">Deletar</a>
+                                    {% endif %}
+                                </summary>
+                                {{ comentario.comentario }}
+                            </details>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
-            <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab2" checked>
+            <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab2">
             <label for="tab2" class="tabs-label">👍 Curtidas</label>
             <div class="tabs-content">
-                {% for curtida in curtidas_post %}
-                        <div class="card-usuario">
+                <ul class="curtidas-list">
+                    {% for curtida in curtidas_post %}
+                        <li>
                             <a href="{% url 'perfil-usuario' curtida.usuario.id %}">
                                 <img src="{{ curtida.usuario.usuarioinfo.foto_perfil.url }}" alt="">
                             </a>
                             <li>{{ curtida.usuario }}</li>
-                        </div>
+                        </li>
                     {% endfor %}
+                </ul>
             </div>
-        </div>
-
-
-
-
-
-
-        
+        </div> 
     </section>
 </body>
 </html>

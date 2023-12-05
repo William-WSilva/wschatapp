@@ -1,4 +1,5 @@
 from itertools import chain
+from django.db.models import Q
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
@@ -67,7 +68,6 @@ def PerfilUsuario(request, user_id):
          'user': user, 'esta_seguindo': esta_seguindo
         }
     )
-
 
 
 def SeguirUsuario(request, user_id):
@@ -183,11 +183,12 @@ def PostItem(request, post_id):
     curtidas_post = Curtida.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo')
 
     return render(request, 'wschatapp/post-item.html', 
-        {'usuario_info': usuario_info, 
+        {'usuario_info': usuario_info,
          'post': post, 
          'posts_salvos': posts_salvos,
          'comentarios_post': comentarios_post,
-         'curtidas_post': curtidas_post})
+         'curtidas_post': curtidas_post,
+         'usuario': usuario})
 
 
 def SalvarPost(request, post_id):
@@ -202,7 +203,7 @@ def SalvarPost(request, post_id):
     PostSalvo.objects.create(usuario=request.user, post=postitem)
 
     # Redireciona de volta para alguma página após salvar o post
-    return redirect('perfil-pessoal')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def NaoSalvarPost(request, post_id):
@@ -215,7 +216,7 @@ def NaoSalvarPost(request, post_id):
     post_salvo = get_object_or_404(PostSalvo, post_id=post_id, usuario=request.user)
     post_salvo.delete() # Remove o post salvo
 
-    return redirect('posts-salvos')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def PostsSalvos(request):
@@ -321,7 +322,6 @@ def DeletarPost(request, post_id):
     return redirect('perfil-pessoal')
 
 
-
 def BuscarUsuarios(request):
     # Se usuario não logado retorna para login
     if not request.user.is_authenticated:
@@ -334,6 +334,30 @@ def BuscarUsuarios(request):
     usuariosrede = UsuarioInfo.objects.all()
 
     return render(request, 'wschatapp/buscar-usuarios.html', {'usuario_info': usuario_info, 'usuario': usuario, 'usuariosrede': usuariosrede})
+
+def PesquisarUsuarios(request):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    if request.method == 'POST':
+        texto_pesquisa = request.POST.get('texto-pesquisa')
+
+        # Filtrar os usuários com base no texto de pesquisa
+        if texto_pesquisa:
+            # Pesquisa insensível a maiúsculas e minúsculas
+            usuariosrede = UsuarioInfo.objects.filter(
+                Q(usuario__username__icontains=texto_pesquisa)  # Filtra pelo nome de usuário
+            )
+        else:
+            usuariosrede = UsuarioInfo.objects.all()
+    else:
+        usuariosrede = UsuarioInfo.objects.all()
+
+    return render(request, 'wschatapp/buscar-usuarios.html', {
+        'usuariosrede': usuariosrede})
+
 
 def ComentarPost(request, post_id):
     # Se usuario não logado retorna para login
@@ -365,6 +389,18 @@ def ComentarPost(request, post_id):
         # Redirecione para a página do post após o comentário ser salvo com sucesso
         return redirect('post-item', post_id=post_id)
 
+def DeletarComentario(request, comentario_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+    
+    comentario = get_object_or_404(Comentario, pk=comentario_id)
+    comentario.delete()
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def CurtirPost(request, post_id):
     # Se usuario não logado retorna para login
     if not request.user.is_authenticated:
@@ -376,4 +412,17 @@ def CurtirPost(request, post_id):
     messages.success(request, 'Post curtido com sucesso')
 
     # Redireciona de volta para a página de onde veio
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def NaoCurtir(request, post_id):
+    # Se usuario não logado retorna para login
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuario não logado')
+        return redirect('login')
+
+    # Obtém o post curtido pelo ID do post e pelo usuário atual
+    post_curtido = get_object_or_404(Curtida, post_id=post_id, usuario=request.user)
+    post_curtido.delete() # Remove o post curtido
+
+     # Redireciona de volta para a página de onde veio
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

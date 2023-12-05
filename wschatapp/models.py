@@ -9,7 +9,7 @@ class UsuarioInfo(models.Model):
 # Definição do modelo para os Posts
 class Post(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Chave estrangeira para o usuário
-    data_hora = models.DateTimeField(auto_now_add=True)  # Data e hora do post
+    data_hora = models.DateTimeField(auto_now=True)  # Data e hora do post
     descricao = models.TextField(null=False, blank=False)  # Descrição do post
     imagem = models.ImageField(upload_to='imagem/%Y/%m/%d/', blank=True)  # Campo para imagem do post
 
@@ -18,7 +18,7 @@ class Comentario(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Chave estrangeira para o usuário
     post = models.ForeignKey(Post, on_delete=models.CASCADE)  # Chave estrangeira para o post relacionado
     comentario = models.TextField(null=False, blank=False)  # Texto do comentário
-    data_hora = models.DateTimeField(auto_now_add=True)  # Data e hora do comentário
+    data_hora = models.DateTimeField(auto_now=True)  # Data e hora do comentário
 
 # Definição do modelo para as Curtidas
 class Curtida(models.Model):

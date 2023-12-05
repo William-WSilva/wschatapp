@@ -74,7 +74,7 @@ section {
     width: 400px;
     background-color: lightgray;
     padding: 8px;
-    margin: 40px 0;
+    margin: 12px 0;
 }
 
 .post-info {
@@ -131,7 +131,7 @@ a img {
     flex-wrap: wrap;
     max-width: 400px;
     width: 100%;
-    border: 1px solid #000;
+    border: 1px solid #ddd;
     margin-bottom: 40px;
 }
 
@@ -162,4 +162,14 @@ a img {
 
 .tabs-radio:checked+.tabs-label+.tabs-content {
     display: initial;
+}
+
+.comentarios-list details {
+    min-height: 60px;
+    margin: 12px 0;
+    cursor: pointer;
+    padding: 4px;
+    border: solid 1px #000;
+    background-color: #a2c5e1;
+    border-radius: 4px;
 }
