@@ -10,49 +10,32 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <img src="{{ usuario_info.foto_perfil.url }}">
-            <div class="header-info">
-                <h3>{{ usuario.username }}</h3>
-                <h4>Seguindo: <span>1000</span></h4>
-                <h4>Seguidores: <span>1000</span></h4>
-            </div>
-            <div class="header-action">
-                <a href="">++ Novo Post</a>
-            </div>
-            <div class="header-nav">
-                <a href="{% url 'config' %}">⚙️</a>
-                <a href="{% url 'perfil-pessoal' %}">🏠</a>
-            </div>
-        </header>
+        {% include 'partials/header.html' %}
     </div>
 
     <hr>
     <section>
-        <div>
-            <h3>Seguindo</h3>
-            <ul>
-                {% for seguido in seguidos %}
-                    <a href="{% url 'perfil-usuario' seguido.id %}">
-                        <div class="card-usuario">
-                            <img src="{{ seguido.foto_perfil.url }}" alt="">
-                            <li>{{ seguido.usuario }}</li>
-                        </div>
-                    </a>
-                {% endfor %}
-            </ul>
+        <div class="rede">
+            <div class="div-seguindo">
+                <h3>Seguindo</h3>
+                <ul>
+                    {% for seguido in usuarios_seguidos %}
+                        <a class="card-usuario" href="{% url 'perfil-usuario' seguido.id %}">
+                            <img src="{{ seguido.usuarioinfo.foto_perfil.url }}" alt="">
+                            <li>{{ seguido }}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
             </div>
-            <div>
+            <div class="div-seguindores">
                 <h3>Seguidores</h3>
                 <ul>
-                    {% for seguidor in seguidores %}
-                    <a href="{% url 'perfil-usuario' seguidor.id %}">
-                        <div class="card-usuario">
-                            <img src="{{ seguidor.foto_perfil.url }}" alt="">
-                            <li>{{ seguidor.usuario }}</li>
-                        </div>
-                    </a>
-                    {% endfor %}
+                    {% for seguidor in usuarios_seguidores %}
+                        <a class="card-usuario" href="{% url 'perfil-usuario' seguidor.id %}">
+                            <img src="{{ seguidor.usuarioinfo.foto_perfil.url }}" alt="">
+                            <li>{{ seguidor }}</li>
+                        </a>
+                        {% endfor %}
                 </ul>
             </div>
         </div>

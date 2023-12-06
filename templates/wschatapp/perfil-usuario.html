@@ -19,9 +19,9 @@
             </div>
             <div class="header-action">
                 {% if esta_seguindo %}
-                    <a href="{% url 'nao-seguir-usuario' user.id %}">- Não Seguir</a>
+                    <a href="{% url 'nao-seguir-usuario' usuario_info.usuario.id %}">- Não Seguir</a>
                 {% else %}
-                    <a href="{% url 'seguir-usuario' user.id %}">+ Seguir</a>
+                    <a href="{% url 'seguir-usuario' usuario_info.usuario.id %}">+ Seguir</a>
                 {% endif %}
             </div>
             <div class="header-nav">

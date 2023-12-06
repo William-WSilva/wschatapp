@@ -10,21 +10,7 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <img src="{{ usuario_info.foto_perfil.url }}">
-            <div class="header-info">
-                <h3>{{ usuario.username }}</h3>
-                <h4>Seguindo: <span>1000</span></h4>
-                <h4>Seguidores: <span>1000</span></h4>
-            </div>
-            <div class="header-action">
-                <a href="">++ Novo Post</a>
-            </div>
-            <div class="header-nav">
-                <a href="{% url 'config' %}">⚙️</a>
-                <a href="{% url 'perfil-pessoal' %}">🏠</a>
-            </div>
-        </header>
+        {% include 'partials/header.html' %}
     </div>
 
     <hr>
@@ -36,7 +22,7 @@
                 <button type="submit">Pesquisar</button>
             </form>
             <ul>
-                {% for usuario in usuariosrede %}
+                {% for usuario in usuarios_cadastrados %}
                     <div class="card-usuario">
                         <a href="{% url 'perfil-usuario' usuario.usuario.id %}">
                             <img src="{{ usuario.foto_perfil.url }}" alt="">

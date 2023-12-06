@@ -15,18 +15,6 @@ img {
     width: 80px;
 }
 
-a {
-    border: solid 1px #000;
-    height: 40px;
-    background-color: rgb(38, 152, 222);
-    color: white;
-    padding: 4px;
-    border-radius: 4px;
-    text-align: center;
-    margin: 8px;
-    text-decoration: none;
-}
-
 hr {
     margin: 12px 0;
 }
@@ -68,7 +56,37 @@ section {
     justify-content: center;
 }
 
-section div {
+.rede {
+    width: 600px;
+    height: 400px;
+    display: flex;
+    overflow-y: auto;
+    background-color: aquamarine;
+}
+
+.div-seguindo {
     width: 100%;
-    text-align: center;
+}
+
+.div-seguindores {
+    width: 100%;
+}
+
+.card-usuario {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border: solid 1px #000;
+    margin: 8px 4px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.card-usuario img {
+    width: 40px;
+}
+
+.card-usuario li {
+    list-style: none;
+    margin-left: 8px;
 }

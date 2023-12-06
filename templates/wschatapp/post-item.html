@@ -10,21 +10,7 @@
 </head>
 <body>
     <div class="container">   
-        <header>
-            <img src="{{ usuario_info.foto_perfil.url }}">
-            <div class="header-info">
-                <h3>Nome perfil: {{ usuario_info.usuario }}</h3>
-                <h4>Seguindo: <span>1000</span></h4>
-                <h4>Seguidores: <span>1000</span></h4>
-            </div>
-            <div class="header-action">
-                <a href="">++ Novo Post</a>
-            </div>
-            <div class="header-nav">
-                <a href="{% url 'config' %}">⚙️</a>
-                <a href="{% url 'perfil-pessoal' %}">🏠</a>
-            </div>
-        </header>
+        {% include 'partials/header.html' %}
     </div>
     <hr>
     <section>

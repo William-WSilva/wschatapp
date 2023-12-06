@@ -9,178 +9,150 @@ from django.contrib import messages
 from usuarios.forms import CadastroForms
 from wschatapp.models import Comentario, Curtida, Post, Rede, UsuarioInfo, PostSalvo
 
-
-def PerfilPessoal(request):
-    # Se usuario não logado retorna para login
+def verificar_autenticacao(request): # Verificar se usuario está logado
     if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
+        messages.error(request, 'Usuário não logado')
         return redirect('login')
 
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=request.user)
-    
-    # Lista de usuarios que sigo
-    usuarios_seguidos = Rede.objects.filter(usuario=usuario).values_list('seguido', flat=True)
-    # Minhas postagens
-    minhas_postagens = Post.objects.filter(usuario=usuario)
-    # postagens de quem sigo
-    postagens_seguidos = Post.objects.filter(usuario__in=usuarios_seguidos)
-    # Minhas postagens + postagens de quem sigo, ordenadas por data e hora
-    posts = sorted(list(chain(minhas_postagens, postagens_seguidos)), key=lambda post: post.data_hora, reverse=True)
-    for post in posts:post.qtd_comentarios = Comentario.objects.filter(post=post).count() # Add qtd comentarios de cada post
-    for post in posts:post.qtd_curtidas = Curtida.objects.filter(post=post).count() # Add qtd comentarios de cada post
 
-    # Verifica se o post já está salvo pelo usuário atual
-    posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True)
-    # Verifica se o post já está salvo pelo usuário atual
-    posts_curtidos = Curtida.objects.filter(usuario=usuario).values_list('post__id', flat=True)
+def variaveis_globais(request): # Variaveis Gerais
+    global usuario, usuario_info, qtd_seguidos, qtd_seguidores, \
+        posts, posts_salvos, posts_curtidos, usuarios_seguidos, \
+        usuarios_seguidores, meus_posts, usuarios_cadastrados
 
-    qtd_seguidos = Rede.objects.filter(usuario=usuario).exclude(seguido__isnull=True).values_list('seguido').count()
-    qtd_seguidores = Rede.objects.filter(usuario=usuario).exclude(seguidor__isnull=True).values_list('seguidor').count()
+    usuario = request.user # informações do usuario logado
+    usuario_info = UsuarioInfo.objects.get(usuario=usuario) # Detalhes usuario
+    lista_ids_seguidos = Rede.objects.filter(usuario=usuario).values_list('seguido', flat=True) # lista de ids seguidos
+    lista_ids_seguidores = Rede.objects.filter(usuario=usuario).values_list('seguidor', flat=True) # lista de ids seguidores
+    usuarios_seguidos = User.objects.filter(id__in=lista_ids_seguidos) # usuarios seguidos
+    usuarios_seguidores = User.objects.filter(id__in=lista_ids_seguidores) # usuarios seguidores
+    meus_posts = Post.objects.filter(usuario=usuario) # meus posts publicados
+    outros_posts = Post.objects.filter(usuario__in=usuarios_seguidos)# postagens de quem sigo
+    posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True) # posts que eu salvei
+    posts_curtidos = Curtida.objects.filter(usuario=usuario).values_list('post__id', flat=True) # posts que eu curti
+    qtd_seguidos = Rede.objects.filter(usuario=usuario).exclude(seguido__isnull=True).count() # qtd de usuarios que sigo
+    qtd_seguidores = Rede.objects.filter(usuario=usuario).exclude(seguidor__isnull=True).count() # qtd de usuarios que me seguem
+    posts = sorted(list(chain(meus_posts, outros_posts)), key=lambda post: post.data_hora, reverse=True)# minhas postagens + de quem sigo
+    for post in posts: # Add em posts: qtd de comentarios e curtidas 
+        post.qtd_comentarios = Comentario.objects.filter(post=post).count()
+        post.qtd_curtidas = Curtida.objects.filter(post=post).count()
+    usuarios_cadastrados = UsuarioInfo.objects.all()
 
 
-    return render(request, 'wschatapp/perfil-pessoal.html', 
-        {'posts': posts, 
-         'usuario_info': usuario_info, 
-         'usuario': usuario,
-         'posts_salvos': posts_salvos,
-         'posts_curtidos': posts_curtidos,
-         'qtd_seguidos': qtd_seguidos,
-         'qtd_seguidores': qtd_seguidores,})
+def PerfilPessoal(request):
+    verificar_autenticacao(request)
+    variaveis_globais(request)
+
+    return render(request, 'wschatapp/perfil-pessoal.html', {
+        'posts': posts,
+        'usuario_info': usuario_info,
+        'usuario': usuario,
+        'posts_salvos': posts_salvos,
+        'posts_curtidos': posts_curtidos,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
+    })
 
 
 def PerfilUsuario(request, user_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    user = get_object_or_404(User, pk=user_id)
-    postsuser = Post.objects.filter(usuario=user)
-    usuario_info = UsuarioInfo.objects.get(usuario=user)
-
-    usuario_atual = request.user
-    esta_seguindo = Rede.objects.filter(usuario=usuario_atual, seguido=user).exists()
+    outro_usuario = get_object_or_404(User, pk=user_id)
+    postsuser = Post.objects.filter(usuario=outro_usuario)
+    usuario_info = UsuarioInfo.objects.get(usuario=outro_usuario)
+    esta_seguindo = Rede.objects.filter(usuario=usuario, seguido=outro_usuario).exists() # Verifica se já estou seguindo o outro_usuario
     
-    return render(request, 'wschatapp/perfil-usuario.html', 
-        {'postsuser': postsuser, 
-         'usuario_info': usuario_info, 
-         'user': user, 'esta_seguindo': esta_seguindo
-        }
-    )
+    return render(request, 'wschatapp/perfil-usuario.html',{
+        'postsuser': postsuser, 
+        'usuario_info': usuario_info, 
+        'outro_usuario': outro_usuario, 'esta_seguindo': esta_seguindo
+    })
 
 
 def SeguirUsuario(request, user_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    usuario_a_seguir = get_object_or_404(User, pk=user_id)
-    usuario_atual = request.user
-    # Verifica se o usuário atual já está seguindo o usuario_a_seguir
-    if not Rede.objects.filter(usuario=usuario_atual, seguido=usuario_a_seguir).exists():
-        Rede.objects.create(usuario=usuario_atual, seguido=usuario_a_seguir)
-
-    # Redireciona de volta para o perfil do usuário que foi seguido
+    outro_usuario = get_object_or_404(User, pk=user_id) # usuario para seguir
+    Rede.objects.create(usuario=usuario, seguido=outro_usuario) # salva outro_usuario como seguido
+    
     return redirect('perfil-usuario', user_id=user_id)
 
 
 def NaoSeguirUsuario(request, user_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    usuario_nao_seguir = get_object_or_404(User, pk=user_id)
-    usuario_atual = request.user
-    # Verifica se o usuário atual está seguindo o usuario_nao_seguir
-    if Rede.objects.filter(usuario=usuario_atual, seguido=usuario_nao_seguir).exists():
-        Rede.objects.filter(usuario=usuario_atual, seguido=usuario_nao_seguir).delete()
+    outro_usuario = get_object_or_404(User, pk=user_id) # usuario para não seguir
+    Rede.objects.filter(usuario=usuario, seguido=outro_usuario).delete() # Deleta outro_usuario como seguido
 
-    # Redireciona de volta para o perfil do usuário que foi seguido
     return redirect('perfil-usuario', user_id=user_id)
 
 
-
 def Config(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
-    
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    # Preenche o formulário com os dados do usuário
-    form = CadastroForms(request.POST or None, initial={
+    form = CadastroForms(request.POST or None, initial={ # Dados para preencher formulário no html
         'nome_usuario': usuario.username,
         'sobrenome': usuario.last_name,
         'email': usuario.email,
     })
-    senha_form = PasswordChangeForm(user=usuario)
 
     if request.method == 'POST':
-        form = CadastroForms(request.POST, request.FILES)
+        form = CadastroForms(request.POST, request.FILES) # informações do formulário html
 
+        # Atualizando informações do usuario 
         if form.is_valid():
             usuario.username = form.cleaned_data['nome_usuario']
             usuario.last_name = form.cleaned_data['sobrenome']
             usuario.email = form.cleaned_data['email']
             nova_senha = form.cleaned_data['senha']
             
-            if nova_senha:
+            if nova_senha: # se a senha for alterada, use set_password.
                 usuario.set_password(nova_senha)
                 usuario.save()
             else:
                 usuario.save()
-
-           # Atualiza a imagem de perfil na tabela UsuarioInfo
-            foto_perfil = request.FILES.get('foto_perfil')
+        
+            foto_perfil = request.FILES.get('foto_perfil') # Atualizando foto do perfil
             if foto_perfil:
                 usuario_info.foto_perfil = foto_perfil
                 usuario_info.save()
 
-            # Atualiza a sessão do usuário após a alteração de senha
-            update_session_auth_hash(request, usuario)
-
+            update_session_auth_hash(request, usuario) # Atualiza a sessão do usuário após a alteração de informações
             messages.success(request, 'Informações atualizadas com sucesso')
             return redirect('config')
 
-    return render(request, 'wschatapp/config.html', {'usuario_info': usuario_info, 'form': form, 'usuario': usuario})
+    return render(request, 'wschatapp/config.html', {
+        'usuario_info': usuario_info, 
+        'form': form, 
+        'usuario': usuario,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
+    })
 
 
 def MinhaRede(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
-    
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    lista_seguidos = Rede.objects.filter(usuario=usuario).values_list('seguido', flat=True)
-    seguidos = UsuarioInfo.objects.filter(id__in=lista_seguidos)
-
-    lista_seguidores = Rede.objects.filter(usuario=usuario).values_list('seguidor', flat=True)
-    seguidores = UsuarioInfo.objects.filter(id__in=lista_seguidores)
-
-    return render(request, 'wschatapp/rede.html', {'seguidos': seguidos,'seguidores': seguidores, 'usuario':usuario, 'usuario_info': usuario_info})
+    return render(request, 'wschatapp/rede.html', {
+        'usuarios_seguidos': usuarios_seguidos, 
+        'usuarios_seguidores': usuarios_seguidores, 
+        'usuario':usuario, 
+        'usuario_info': usuario_info
+    })
 
 
 def PostItem(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    post = get_object_or_404(Post, pk=post_id)
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
-    # Verifica se o post já está salvo pelo usuário atual
-    posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True)
-    comentarios_post = Comentario.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo')
-    curtidas_post = Curtida.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo')
+    post = get_object_or_404(Post, pk=post_id) # post selecionado
+    comentarios_post = Comentario.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo') # usuarios e comentarios do post selecionado
+    curtidas_post = Curtida.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo') # usuarios que curtiram o post selecionado
 
     return render(request, 'wschatapp/post-item.html', 
         {'usuario_info': usuario_info,
@@ -192,79 +164,65 @@ def PostItem(request, post_id):
 
 
 def SalvarPost(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
-    
-    # Obtém o post com base no ID recebido
-    postitem = Post.objects.get(id=post_id)
-    # Cria uma entrada na tabela PostSalvo para salvar o post para o usuário atual
-    PostSalvo.objects.create(usuario=request.user, post=postitem)
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    # Redireciona de volta para alguma página após salvar o post
+    post = Post.objects.get(id=post_id) # post selecionado
+    PostSalvo.objects.create(usuario=request.user, post=post) # salva post selecionado
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def NaoSalvarPost(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    # Obtém o post salvo pelo ID do post e pelo usuário atual
-    post_salvo = get_object_or_404(PostSalvo, post_id=post_id, usuario=request.user)
-    post_salvo.delete() # Remove o post salvo
+    post = get_object_or_404(PostSalvo, usuario=request.user, post_id=post_id) # post selecionado
+    post.delete() # Deleta o post
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def PostsSalvos(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
-    
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
-    ids_posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True) # Obtém os IDs dos posts salvos pelo usuário atual
-    posts = Post.objects.filter(id__in=ids_posts_salvos) # Obtém os detalhes dos posts salvos pelo usuário atual
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    return render(request, 'wschatapp/posts-salvos.html', {'usuario': usuario ,'usuario_info': usuario_info, 'posts': posts})
+    posts = Post.objects.filter(id__in=posts_salvos) # Obtém os detalhes dos posts salvos pelo usuário atual
+
+    return render(request, 'wschatapp/posts-salvos.html', {
+        'usuario': usuario ,
+        'usuario_info': usuario_info, 
+        'posts': posts
+    })
 
 
 def MeusPosts(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
-    posts = Post.objects.filter(usuario=usuario)
-    return render(request, 'wschatapp/meus-posts.html', {'posts': posts, 'usuario_info': usuario_info, 'usuario': usuario})
+    return render(request, 'wschatapp/meus-posts.html', {
+        'meus_posts': meus_posts, 
+        'usuario_info': usuario_info, 
+        'usuario': usuario
+    })
 
 
 def NovoPost(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
+
     return render(request, 'wschatapp/novo-post.html')
 
 
 def SalvarPostNovo(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
     if request.method == 'POST':
-        descricao = request.POST.get('descricao')
-        imagem = request.FILES.get('imagem')
+        descricao = request.POST.get('descricao') # campo descrição form 
+        imagem = request.FILES.get('imagem') # campo imagem form 
 
-        # Crie um novo post com os dados recebidos
-        novo_post = Post(usuario=request.user, descricao=descricao, imagem=imagem)
+        novo_post = Post(usuario=request.user, descricao=descricao, imagem=imagem) # salva novo post
         novo_post.save()
 
         return redirect('perfil-pessoal')
@@ -272,157 +230,129 @@ def SalvarPostNovo(request):
     messages.error(request, 'Post não foi salvo')
     return render(request, 'wschatapp/novo-post.html')
 
+
 def EditarPost(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    post = get_object_or_404(Post, pk=post_id)
+    post = get_object_or_404(Post, pk=post_id) # post selecionado
 
     return render(request, 'wschatapp/editar-post.html', {'post': post})
 
 
 def SalvarPostEditado(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    post = get_object_or_404(Post, pk=post_id)
+    post = get_object_or_404(Post, pk=post_id) # post selecionado editado
     if request.method == 'POST':
-        descricao = request.POST.get('descricao')
-        imagem = request.FILES.get('imagem')
+        descricao = request.POST.get('descricao') # campo descrição form 
+        imagem = request.FILES.get('imagem') # campo imagem form 
         
-        # Verifique se a descrição está presente
-        if not descricao:
+        if not descricao: # Verifique se a descrição está presente
             return HttpResponseBadRequest('A descrição não pode estar vazia.')
         
-        post.descricao = descricao
+        post.descricao = descricao # edita campo descricao
         if imagem:
-            if imagem.content_type.startswith('image'):
+            if imagem.content_type.startswith('image'): # verifica se o arquivo é uma imagem
                 post.imagem = imagem
             else:
                 return HttpResponseBadRequest('O arquivo enviado não é uma imagem válida.')
-        post.save() # Salve as alterações no post
-        
+        post.save()
+
         return redirect('perfil-pessoal')
 
     return render(request, 'wschatapp/perfil-pessoal.html')
 
+
 def DeletarPost(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    post = get_object_or_404(Post, pk=post_id)
+    post = get_object_or_404(Post, pk=post_id) # post selecionado
     post.delete()
 
     return redirect('perfil-pessoal')
 
 
 def BuscarUsuarios(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    usuario = request.user
-    usuario_info = UsuarioInfo.objects.get(usuario=usuario)
+    return render(request, 'wschatapp/buscar-usuarios.html', {
+        'usuario_info': usuario_info,
+        'usuario': usuario,
+        'usuarios_cadastrados': usuarios_cadastrados
+    })
 
-    usuariosrede = UsuarioInfo.objects.all()
-
-    return render(request, 'wschatapp/buscar-usuarios.html', {'usuario_info': usuario_info, 'usuario': usuario, 'usuariosrede': usuariosrede})
 
 def PesquisarUsuarios(request):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
     if request.method == 'POST':
-        texto_pesquisa = request.POST.get('texto-pesquisa')
+        texto_pesquisa = request.POST.get('texto-pesquisa') # valor para pesquisar usuarios
 
-        # Filtrar os usuários com base no texto de pesquisa
         if texto_pesquisa:
-            # Pesquisa insensível a maiúsculas e minúsculas
-            usuariosrede = UsuarioInfo.objects.filter(
-                Q(usuario__username__icontains=texto_pesquisa)  # Filtra pelo nome de usuário
-            )
+            # Pesquisa insensível a maiúsculas e minúsculas, e filtra usuarios correspondentes
+            usuarios_cadastrados = UsuarioInfo.objects.filter( Q(usuario__username__icontains=texto_pesquisa) )
         else:
-            usuariosrede = UsuarioInfo.objects.all()
+            usuarios_cadastrados = UsuarioInfo.objects.all()
     else:
-        usuariosrede = UsuarioInfo.objects.all()
+        usuarios_cadastrados = UsuarioInfo.objects.all()
 
-    return render(request, 'wschatapp/buscar-usuarios.html', {
-        'usuariosrede': usuariosrede})
+    return render(request, 'wschatapp/buscar-usuarios.html', {'usuarios_cadastrados': usuarios_cadastrados})
 
 
 def ComentarPost(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    # Verifique se o método de requisição é POST
     if request.method == 'POST':
-        # Obtenha o post relacionado ao post_id ou retorne um erro 404 se não existir
-        post = get_object_or_404(Post, pk=post_id)
+        post = get_object_or_404(Post, pk=post_id) # post selecionado
 
-        # Capture o texto do comentário do formulário
-        comentario_texto = request.POST.get('comentario')
+        comentario_texto = request.POST.get('comentario') # campo comentario form 
 
-        # Verifique se o campo de comentário não está vazio
         if not comentario_texto:
             messages.error(request, 'O campo de comentário está vazio.')
-            return redirect('perfil-pessoal')  # Redirecione para onde for apropriado
+            return redirect('perfil-pessoal')
 
-        # Crie e salve um novo objeto Comentario
-        novo_comentario = Comentario.objects.create(
-            usuario=request.user,
+        novo_comentario = Comentario.objects.create( # salva um novo comentario
+            usuario=usuario,
             post=post,
             comentario=comentario_texto
         )
         messages.success(request, 'Comentário adicionado com sucesso.')
 
-        # Redirecione para a página do post após o comentário ser salvo com sucesso
         return redirect('post-item', post_id=post_id)
 
+
 def DeletarComentario(request, comentario_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    comentario = get_object_or_404(Comentario, pk=comentario_id)
+    comentario = get_object_or_404(Comentario, pk=comentario_id) # comentario selecionado
     comentario.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def CurtirPost(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
     
-    post = get_object_or_404(Post, pk=post_id) # Obtém o post com base no ID recebido ou retorna um erro 404 se não existir
-    Curtida.objects.create(usuario=request.user, post=post)
+    post = get_object_or_404(Post, pk=post_id) # post selecionado
+    Curtida.objects.create(usuario=request.user, post=post) # salva curtida para post selecionado
     messages.success(request, 'Post curtido com sucesso')
 
-    # Redireciona de volta para a página de onde veio
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
 def NaoCurtir(request, post_id):
-    # Se usuario não logado retorna para login
-    if not request.user.is_authenticated:
-        messages.error(request, 'Usuario não logado')
-        return redirect('login')
+    verificar_autenticacao(request)
+    variaveis_globais(request)
 
-    # Obtém o post curtido pelo ID do post e pelo usuário atual
-    post_curtido = get_object_or_404(Curtida, post_id=post_id, usuario=request.user)
-    post_curtido.delete() # Remove o post curtido
+    post_curtido = get_object_or_404(Curtida, post_id=post_id, usuario=request.user) # post selecionado
+    post_curtido.delete()
 
-     # Redireciona de volta para a página de onde veio
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
