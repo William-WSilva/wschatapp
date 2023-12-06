@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/perfil-pessoal.css' %}">
     <title>perfil-pessoal</title>
-
 </head>
 <body>
     <div class="container">   
@@ -20,53 +19,9 @@
     <hr>
     <section>
         <ul>
-            {% if posts %}
-                {% for post in posts %}
-                    <li class="post">
-                        <div class="post-info">
-                            <a href="{% url 'perfil-usuario' post.usuario.id %}">
-                                <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto de perfil">
-                                <h4>{{ post.usuario }}</h4>
-                            </a>
-                            <h5>Data: {{ post.data_hora|date:"d/m/y H:i" }}</h5>
-                        </div>
-                        <hr>
-                        <p>{{ post.descricao }}</p>
-                        {% if post.imagem == "" or post.imagem == null %}
-                            <a href="{% url 'post-item' post.id %}">
-                                <img class="foto-post" src="{% static 'assets/img/no-image.jpg'%}">
-                                <span>{{ post.qtd_comentarios }} Comentário</span>
-                                <span>{{ post.qtd_curtidas }} Curtida</span>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'post-item' post.id %}">
-                                <img class="foto-post" src="{{ post.imagem.url }}">
-                                <span>{{ post.qtd_comentarios }} Comentário</span>
-                                <span>{{ post.qtd_curtidas }} Curtida</span>
-                            </a>
-                        {% endif %}
-                        <form method="POST" action="{% url 'comentar-post' post.id %}">
-                            {% csrf_token %}
-                            <textarea name="comentario" rows="1" placeholder="Comentar:"></textarea>
-                            <button type="submit">📝 Comentar</button>
-                        </form>
-                        <div>
-                            {% if post.id in posts_curtidos %}
-                                <a href="{% url 'nao-curtir' post.id %}">Curtido</a>
-                            {% else %}
-                                <a href="{% url 'curtir-post' post.id %}">Curtir</a>
-                            {% endif %}
-                            
-                            {% if post.id in posts_salvos %}
-                                <a href="{% url 'nao-salvar-post' post.id %}">Salvo</a>
-                            {% else %}
-                                <a href="{% url 'salvar-post' post.id %}">+ Salvar</a>
-                            {% endif %}
-                        </div>
-                    </li>
-                {% endfor %}
-            {% else %}
-            {% endif %}
+            {% for post in posts %}
+                {% include 'partials/post.html' %}
+            {% endfor %}
         </ul>
     </section>
 </body>

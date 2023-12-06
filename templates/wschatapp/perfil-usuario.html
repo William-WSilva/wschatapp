@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/perfil-usuario.css' %}">
     <title>perfil-usuario</title>
-
 </head>
 <body>
     <div class="container">
@@ -30,48 +29,12 @@
             </div>
         </header>
     </div>
-
     <hr>
     <section>
         <ul>
-            {% if postsuser %}
-            {% for post in postsuser %}
-            <li class="post">
-                <div class="post-info">
-                    {% if usuario_info %}
-                        <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
-                    {% else %}
-                        <img src="{% static 'assets/img/foto_padrao.jpg' %}" alt="Foto padrão">
-                    {% endif %}
-                    <a href="{% url 'perfil-usuario' post.usuario.id %}"><h4>{{ post.usuario }}</h4></a>
-                    <h5>Data: {{ post.data_hora }}</h5>
-                </div>
-                <hr>
-                <p>{{ post.descricao }}</p>
-                {% if post.imagem == "" or post.imagem == null %}
-                    <a href="{% url 'post-item' post.id %}">
-                        <img class="foto-post" src="{% static 'assets/img/no-image.jpg'%}">
-                        <span>10 comentarios</span>
-                    </a>
-                {% else %}
-                    <a href="{% url 'post-item' post.id %}">
-                        <img class="foto-post" src="{{ post.imagem.url }}">
-                        <span>10 comentarios</span>
-                    </a>
-                {% endif %}
-                <form>
-                    <textarea rows="1" placeholder="Comentar:"></textarea>
-                    <a href="#">📝</a>
-                </form>
-                <div>
-                    <a href="#">Curtir</a>
-                    <a href="#">Salvar</a>
-                </div>
-            </li>
+            {% for post in posts_usuario %}
+                {% include 'partials/post.html' %}
             {% endfor %}
-            {% else %}
-            {% endif %}
-
         </ul>
     </section>
 </body>

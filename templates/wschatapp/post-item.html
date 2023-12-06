@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/post-item.css' %}">
     <title>Postitem</title>
-
 </head>
 <body>
     <div class="container">   
@@ -15,35 +14,7 @@
     <hr>
     <section>
         <ul>
-            <li class="post">
-                <div class="post-info">
-                    <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
-                    <h4>{{ post.usuario }}</h4>
-                    <h5>Data: {{ post.data_hora }}</h5>
-                </div>
-                <hr>
-                <p>{{ post.descricao }}</p>
-                {% if post.imagem == "" or post.imagem == null %}
-                        <img class="foto-post" src="{% static 'assets/img/no-image.jpg'%}">
-                        <span>10 comentarios</span>
-                {% else %}
-                        <img class="foto-post" src="{{ post.imagem.url }}">
-                        <span>10 comentarios</span>
-                {% endif %}
-                <form method="POST" action="{% url 'comentar-post' post.id %}">
-                    {% csrf_token %}
-                    <textarea name="comentario" rows="1" placeholder="Comentar:"></textarea>
-                    <button type="submit">📝 Comentar</button>
-                </form>
-                <div>
-                    <a href="#">Curtir</a>
-                    {% if post.id in posts_salvos %}
-                        <button>Salvo</button>
-                    {% else %}
-                        <a href="{% url 'salvar-post' post.id %}">Salvar</a>
-                    {% endif %}
-                </div>
-            </li>
+            {% include 'partials/post.html' %}
         </ul>
     </section>
     <section>

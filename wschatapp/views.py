@@ -4,7 +4,6 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from usuarios.forms import CadastroForms
 from wschatapp.models import Comentario, Curtida, Post, Rede, UsuarioInfo, PostSalvo
@@ -59,12 +58,12 @@ def PerfilUsuario(request, user_id):
     variaveis_globais(request)
     
     outro_usuario = get_object_or_404(User, pk=user_id)
-    postsuser = Post.objects.filter(usuario=outro_usuario)
+    posts_usuario = Post.objects.filter(usuario=outro_usuario)
     usuario_info = UsuarioInfo.objects.get(usuario=outro_usuario)
     esta_seguindo = Rede.objects.filter(usuario=usuario, seguido=outro_usuario).exists() # Verifica se já estou seguindo o outro_usuario
     
     return render(request, 'wschatapp/perfil-usuario.html',{
-        'postsuser': postsuser, 
+        'posts_usuario': posts_usuario, 
         'usuario_info': usuario_info, 
         'outro_usuario': outro_usuario, 'esta_seguindo': esta_seguindo
     })
@@ -222,10 +221,15 @@ def SalvarPostNovo(request):
         descricao = request.POST.get('descricao') # campo descrição form 
         imagem = request.FILES.get('imagem') # campo imagem form 
 
-        novo_post = Post(usuario=request.user, descricao=descricao, imagem=imagem) # salva novo post
-        novo_post.save()
+        if descricao: # descrição obrigatória
+            if imagem:
+                novo_post = Post(usuario=request.user, descricao=descricao, imagem=imagem) # salva novo post com imagem escolhida
+            else:
+                caminho_imagem_padrao = 'imagem/no-image.jpg'
+                novo_post = Post(usuario=request.user, descricao=descricao, imagem=caminho_imagem_padrao) # salva novo post sem imagem
+            novo_post.save()
 
-        return redirect('perfil-pessoal')
+            return redirect('perfil-pessoal')
     
     messages.error(request, 'Post não foi salvo')
     return render(request, 'wschatapp/novo-post.html')

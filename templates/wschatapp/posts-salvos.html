@@ -6,51 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/post-salvo.css' %}">
     <title>post-salvo</title>
-
 </head>
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
     </div>    
-
     <hr>
     <section>
         <ul>
-            {% if posts %}
-                {% for post in posts %}
-                    <li class="post">
-                        <div class="post-info">
-                            <a href="{% url 'perfil-usuario' post.usuario.id %}">
-                                <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto de perfil">
-                                <h4>{{ post.usuario }}</h4>
-                            </a>
-                            <h5>Data: {{ post.data_hora }}</h5>
-                        </div>
-                        <hr>
-                        <p>{{ post.descricao }}</p>
-                        {% if post.imagem == "" or post.imagem == null %}
-                            <a href="{% url 'post-item' post.id %}">
-                                <img class="foto-post" src="{% static 'assets/img/no-image.jpg'%}">
-                                <span>10 comentarios</span>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'post-item' post.id %}">
-                                <img class="foto-post" src="{{ post.imagem.url }}">
-                                <span>10 comentarios</span>
-                            </a>
-                        {% endif %}
-                        <form>
-                            <textarea rows="1" placeholder="Comentar:"></textarea>
-                            <a href="#">📝</a>
-                        </form>
-                        <div>
-                            <a href="#">Curtir</a>
-                            <a href="{% url 'nao-salvar-post' post.id %}">Remover</a>
-                        </div>
-                    </li>
-                {% endfor %}
-            {% else %}
-            {% endif %}
+            {% for post in posts %}
+                {% include 'partials/post.html' %}
+            {% endfor %}
         </ul>
     </section>
 </body>
