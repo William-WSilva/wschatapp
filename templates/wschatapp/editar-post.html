@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/editar-post.css' %}">
     <title>Editar Post</title>
 
@@ -11,26 +13,26 @@
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
+        <hr>
+        <section>
+            <ul>
+                <li class="post">
+                    <div class="post-info">
+                        <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
+                        <h4>{{ post.usuario }}</h4>
+                        <h5>Data: {{ post.data_hora }}</h5>
+                    </div>
+                    <hr>
+                    <form action="{% url 'salvar-post-editado' post.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <textarea placeholder="Descrição Postagem:" name="descricao">{{post.descricao}}</textarea>
+                        <input type="file" name="imagem"> <!-- Campo para escolher o arquivo de imagem -->
+                        <img class="foto-post" src="{{ post.imagem.url }}">
+                        <button type="submit">Salvar</button>
+                    </form>
+                </li>
+            </ul>
+        </section>
     </div>
-    <hr>
-    <section>
-        <ul>
-            <li class="post">
-                <div class="post-info">
-                    <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
-                    <h4>{{ post.usuario }}</h4>
-                    <h5>Data: {{ post.data_hora }}</h5>
-                </div>
-                <hr>
-                <form action="{% url 'salvar-post-editado' post.id %}" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <textarea placeholder="Descrição Postagem:" name="descricao">{{post.descricao}}</textarea>
-                    <input type="file" name="imagem"> <!-- Campo para escolher o arquivo de imagem -->
-                    <img class="foto-post" src="{{ post.imagem.url }}">
-                    <button type="submit">Salvar</button>
-                </form>
-            </li>
-        </ul>
-    </section>
 </body>
 </html>

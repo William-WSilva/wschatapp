@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/config.css' %}">
     <title>Config</title>
 
@@ -11,37 +13,38 @@
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-    </div>
-    <hr>
-    <section>
-        <div>
-            <form action="{% url 'config' %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in form.visible_fields %}
-                    {% if field.name != 'nome_usuario' %}
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        {{ field }}
-                        {% for error in field.errors %}
-                            <div>
-                                {{ error }}
-                            </div>
+        <main>
+            <section>
+                <div>
+                    <form action="{% url 'config' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form.visible_fields %}
+                            {% if field.name != 'nome_usuario' %}
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                            {% for error in field.errors %}
+                                <div>
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                            {% else %}
+                                <!-- Campo de entrada para o nome de usuário desabilitado -->
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" value="{{ usuario.username }}" readonly>
+                            {% endif %}
                         {% endfor %}
-                    {% else %}
-                        <!-- Campo de entrada para o nome de usuário desabilitado -->
-                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                        <input type="text" id="{{ field.id_for_label }}" name="{{ field.html_name }}" value="{{ usuario.username }}" readonly>
-                    {% endif %}
-                {% endfor %}
-                <button type="submit">Salvar</button>
-                <a href="{% url 'logout' %}">Sair</a>
-            </form>
-        </div>
-        <div class="config-action">
-            <a href="{% url 'buscar-usuarios' %}">Buscar Usuarios</a>
-            <a href="{% url 'rede' %}">Minha Rede</a>
-            <a href="{% url 'posts-salvos' %}">Posts Salvos</a>
-            <a href="{% url 'meus-posts' %}">Meus Posts</a>
-        </div>
-    </section>
+                        <button type="submit">Salvar</button>
+                        <a href="{% url 'logout' %}">Sair</a>
+                    </form>
+                </div>
+                <div class="config-action">
+                    <a href="{% url 'buscar-usuarios' %}">Buscar Usuarios</a>
+                    <a href="{% url 'rede' %}">Minha Rede</a>
+                    <a href="{% url 'posts-salvos' %}">Posts Salvos</a>
+                    <a href="{% url 'meus-posts' %}">Meus Posts</a>
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
 </html>

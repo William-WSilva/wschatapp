@@ -4,26 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/post-item.css' %}">
     <title>Postitem</title>
 </head>
 <body>
     <div class="container">   
         {% include 'partials/header.html' %}
-    </div>
-    <hr>
-    <section>
-        <ul>
-            {% include 'partials/post.html' %}
-        </ul>
-    </section>
-    <section>
-        <div class="tabs">
-            <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab1" checked>
-            <label for="tab1" class="tabs-label">📝 Comentários</label>
-            <div class="tabs-content">
-                <ul class="comentarios-list">
-                    {% for comentario in comentarios_post %}
+        <hr>
+        <section>
+            <ul>
+                {% include 'partials/post.html' %}
+            </ul>
+        </section>
+        <section>
+            <div class="tabs">
+                <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab1" checked>
+                <label for="tab1" class="tabs-label">📝 Comentários</label>
+                <div class="tabs-content">
+                    <ul class="comentarios-list">
+                        {% for comentario in comentarios_post %}
                         <li>
                             <details>
                                 <summary>
@@ -32,30 +33,31 @@
                                     </a>
                                     {{ comentario.usuario }}: ...
                                     {% if comentario.usuario == usuario %}
-                                        <a href="{% url 'deletar-comentario' comentario.id %}">Deletar</a>
+                                    <a href="{% url 'deletar-comentario' comentario.id %}">Deletar</a>
                                     {% endif %}
                                 </summary>
                                 {{ comentario.comentario }}
                             </details>
                         </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab2">
-            <label for="tab2" class="tabs-label">👍 Curtidas</label>
-            <div class="tabs-content">
-                <ul class="curtidas-list">
-                    {% for curtida in curtidas_post %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <input type="radio" class="tabs-radio" name="tabs-interacao-post" id="tab2">
+                <label for="tab2" class="tabs-label">👍 Curtidas</label>
+                <div class="tabs-content">
+                    <ul class="curtidas-list">
+                        {% for curtida in curtidas_post %}
                         <li>
                             <a href="{% url 'perfil-usuario' curtida.usuario.id %}">
                                 <img src="{{ curtida.usuario.usuarioinfo.foto_perfil.url }}" alt="">
                             </a>
                             <li>{{ curtida.usuario }}</li>
                         </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div> 
-    </section>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div> 
+        </section>
+    </div>
 </body>
 </html>

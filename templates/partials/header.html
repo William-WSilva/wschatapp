@@ -11,8 +11,10 @@
         {% else %}
             <h3>{{ usuario.username }}</h3>
         {% endif %}
-        <h4>Seguindo: {{ qtd_seguidos }}</h4>
-        <h4>Seguidores: {{ qtd_seguidores }}</h4>
+        <div>
+            <h4>Seguindo: {{ qtd_seguidos }}</h4>
+            <h4>Seguidores: {{ qtd_seguidores }}</h4>
+        </div>
     </div>
     <div class="header-action">
         {% if rota_perfil_usuario %}
@@ -22,11 +24,11 @@
                 <a href="{% url 'seguir-usuario' outro_usuario_info.usuario.id %}">+ Seguir</a>
             {% endif %}
         {% else %}
-            <a href="{% url 'novo-post' %}">++ Novo Post</a>
+            <a href="{% url 'novo-post' %}">+ Novo Post</a>
         {% endif %}
     </div>
-    <div class="header-nav">
+    <nav class="header-nav">
         <a href="{% url 'config' %}">⚙️</a>
         <a href="{% url 'perfil-pessoal' %}">🏠</a>
-    </div>
+    </nav>
 </header>

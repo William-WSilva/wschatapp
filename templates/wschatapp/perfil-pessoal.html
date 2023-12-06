@@ -4,25 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/perfil-pessoal.css' %}">
     <title>perfil-pessoal</title>
 </head>
 <body>
     <div class="container">   
         {% include 'partials/header.html' %}
+        {% for message in messages %}
+        <div>
+            <p id="messages">{{ message }}</p>
+        </div>
+        {% endfor %}
+        <main>
+            <ul class="lista-post">
+                {% for post in posts %}
+                    {% include 'partials/post.html' %}
+                {% endfor %}
+            </ul>
+        </main>
     </div>
-    {% for message in messages %}
-    <div>
-        <p id="messages">{{ message }}</p>
-    </div>
-    {% endfor %}
-    <hr>
-    <section>
-        <ul>
-            {% for post in posts %}
-                {% include 'partials/post.html' %}
-            {% endfor %}
-        </ul>
-    </section>
 </body>
 </html>

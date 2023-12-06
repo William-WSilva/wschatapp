@@ -4,20 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/perfil-usuario.css' %}">
     <title>perfil-usuario</title>
 </head>
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-    </div>
-    <hr>
-    <section>
-        <ul>
-            {% for post in posts_usuario %}
+        <hr>
+        <section>
+            <ul>
+                {% for post in posts_usuario %}
                 {% include 'partials/post.html' %}
-            {% endfor %}
-        </ul>
-    </section>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
 </body>
 </html>

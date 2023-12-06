@@ -1,0 +1,140 @@
+/* Main */
+
+main {
+    width: 900px;
+    height: 99.7vh;
+    padding-top: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: linear-gradient(to bottom,#45B6C6, #001251);
+}
+
+.lista-post {
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lista-post::-webkit-scrollbar {
+    display: none;
+  }
+
+.card-post {
+    width: 600px;
+    border: solid 1px #ddd;
+    background-color: #f9f9fb;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    padding: 16px;
+    list-style: none;
+}
+
+
+.card-post hr {
+    margin-top: 8px;
+}
+
+.foto-perfil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 16px;
+    margin-bottom: 8px;
+}
+
+.post-info {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #dbdada;
+    border-radius: 4px;
+    color: #175593;
+
+}
+
+.post-info h5 {
+    font-size: 16px;
+}
+
+.post-info a {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    text-decoration: none;
+    color: #175593;
+}
+
+.card-post p {
+    margin-top: 16px;
+    height: 40px;
+    border: solid 1px #ddd;
+}
+
+.link-post{
+    text-decoration: none;
+}
+
+.link-post span {
+    margin-right: 8px;
+    font-size: 18px;
+    color: #175593;
+}
+
+.foto-post {
+    margin-top: 16px;
+    width: 100%;
+    min-height: 280px;
+}
+
+.comentario {
+    margin-top: 8px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.comentario textarea {
+    width: 100%;
+    margin-right: 8px;
+    resize: none;
+    padding: 4px;
+}
+
+.comentario button {
+    width: 40px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.interacao-post {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.interacao-post a {
+    text-decoration: none;
+    width: 100px;
+    height: 30px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 4px;
+    background-color: #175593;
+    margin-right: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.interacao-post .btn-ativo {
+    background-color: #53b781;
+}
+
+.interacao-post .btn-deletar {
+    background-color: #b75a53;
+}

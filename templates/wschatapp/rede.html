@@ -4,39 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/rede.css' %}">
     <title>rede</title>
 </head>
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-    </div>
-    <hr>
-    <section>
-        <div class="rede">
-            <div class="div-seguindo">
-                <h3>Seguindo</h3>
-                <ul>
-                    {% for seguido in usuarios_seguidos %}
+        <hr>
+        <section>
+            <div class="rede">
+                <div class="div-seguindo">
+                    <h3>Seguindo</h3>
+                    <ul>
+                        {% for seguido in usuarios_seguidos %}
                         <a class="card-usuario" href="{% url 'perfil-usuario' seguido.id %}">
                             <img src="{{ seguido.usuarioinfo.foto_perfil.url }}" alt="">
                             <li>{{ seguido }}</li>
                         </a>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="div-seguindores">
-                <h3>Seguidores</h3>
-                <ul>
-                    {% for seguidor in usuarios_seguidores %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="div-seguindores">
+                    <h3>Seguidores</h3>
+                    <ul>
+                        {% for seguidor in usuarios_seguidores %}
                         <a class="card-usuario" href="{% url 'perfil-usuario' seguidor.id %}">
                             <img src="{{ seguidor.usuarioinfo.foto_perfil.url }}" alt="">
                             <li>{{ seguidor }}</li>
                         </a>
-                    {% endfor %}
-                </ul>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 </body>
 </html>

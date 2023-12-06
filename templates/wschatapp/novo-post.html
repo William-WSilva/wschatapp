@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/novo-post.css' %}">
     <title>novo-post</title>
 
@@ -11,26 +13,26 @@
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-    </div>
-    <hr>
-    <section>
-        <div class="post">
-            <div class="post-info">
-                <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
-                <h4>Nome Usuario</h4>
-                <h5>Data:</h5>
-            </div>
-            <hr>
-            <form action="{% url 'salvar-post-novo' %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div>
-                    <label>Escolher Foto</label>
-                    <input type="file" name="imagem"> <!-- Campo para escolher o arquivo de imagem -->
+        <hr>
+        <section>
+            <div class="post">
+                <div class="post-info">
+                    <img src="{% static 'assets/img/3_Rob Carsson.png' %}">
+                    <h4>Nome Usuario</h4>
+                    <h5>Data:</h5>
                 </div>
-                <textarea cols="30" rows="10" placeholder="Descrição Postagem:" name="descricao"></textarea>
-                <button type="submit">Publicar</button>
-            </form>
-        </div>
-    </section>
+                <hr>
+                <form action="{% url 'salvar-post-novo' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div>
+                        <label>Escolher Foto</label>
+                        <input type="file" name="imagem"> <!-- Campo para escolher o arquivo de imagem -->
+                    </div>
+                    <textarea cols="30" rows="10" placeholder="Descrição Postagem:" name="descricao"></textarea>
+                    <button type="submit">Publicar</button>
+                </form>
+            </div>
+        </section>
+    </div>
 </body>
 </html>

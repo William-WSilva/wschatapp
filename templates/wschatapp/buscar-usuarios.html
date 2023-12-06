@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/rede.css' %}">
     <title>Buscar Usuarios</title>
 
@@ -11,26 +13,26 @@
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-    </div>
-
-    <hr>
-    <section>
-            <h3>Buscar Usuarios</h3>
-            <form action="{% url 'pesquisar-usuarios' %}" method="POST">
-                {% csrf_token %}
-                <input type="search" name="texto-pesquisa">
-                <button type="submit">Pesquisar</button>
-            </form>
-            <ul>
-                {% for usuario in usuarios_cadastrados %}
+        <main>
+            <section>
+                <h3>Buscar Usuarios</h3>
+                <form action="{% url 'pesquisar-usuarios' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="search" name="texto-pesquisa">
+                    <button type="submit">Pesquisar</button>
+                </form>
+                <ul>
+                    {% for usuario in usuarios_cadastrados %}
                     <div class="card-usuario">
                         <a href="{% url 'perfil-usuario' usuario.usuario.id %}">
                             <img src="{{ usuario.foto_perfil.url }}" alt="">
                         </a>
                         <li>{{ usuario.usuario }}</li>
                     </div>
-                {% endfor %}
-            </ul>
-    </section>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+    </div>
 </body>
 </html>
