@@ -1,13 +1,29 @@
 <!-- header.html -->
 <header>
-    <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
+    {% if rota_perfil_usuario %}
+        <img src="{{ outro_usuario_info.foto_perfil.url }}" alt="Foto de perfil">
+    {% else %}
+        <img src="{{ usuario_info.foto_perfil.url }}" alt="Foto de perfil">
+    {% endif %}
     <div class="header-info">
-        <h3>{{ usuario.username }}</h3>
+        {% if rota_perfil_usuario %}
+            <h3>Perfil Usuario: {{ outro_usuario_info.usuario }}</h3>
+        {% else %}
+            <h3>{{ usuario.username }}</h3>
+        {% endif %}
         <h4>Seguindo: {{ qtd_seguidos }}</h4>
         <h4>Seguidores: {{ qtd_seguidores }}</h4>
     </div>
     <div class="header-action">
-        <a href="{% url 'novo-post' %}">++ Novo Post</a>
+        {% if rota_perfil_usuario %}
+            {% if esta_seguindo %}
+            <a href="{% url 'nao-seguir-usuario' outro_usuario_info.usuario.id %}">- Não Seguir</a>
+            {% else %}
+                <a href="{% url 'seguir-usuario' outro_usuario_info.usuario.id %}">+ Seguir</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'novo-post' %}">++ Novo Post</a>
+        {% endif %}
     </div>
     <div class="header-nav">
         <a href="{% url 'config' %}">⚙️</a>

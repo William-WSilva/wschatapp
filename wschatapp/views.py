@@ -58,14 +58,18 @@ def PerfilUsuario(request, user_id):
     variaveis_globais(request)
     
     outro_usuario = get_object_or_404(User, pk=user_id)
+    outro_usuario_info = UsuarioInfo.objects.get(usuario=outro_usuario)
+    
     posts_usuario = Post.objects.filter(usuario=outro_usuario)
-    usuario_info = UsuarioInfo.objects.get(usuario=outro_usuario)
     esta_seguindo = Rede.objects.filter(usuario=usuario, seguido=outro_usuario).exists() # Verifica se já estou seguindo o outro_usuario
     
     return render(request, 'wschatapp/perfil-usuario.html',{
+        'esta_seguindo': esta_seguindo,
         'posts_usuario': posts_usuario, 
-        'usuario_info': usuario_info, 
-        'outro_usuario': outro_usuario, 'esta_seguindo': esta_seguindo
+        'outro_usuario_info': outro_usuario_info, 
+        'posts_salvos': posts_salvos,
+        'posts_curtidos': posts_curtidos,
+        'rota_perfil_usuario': True
     })
 
 
@@ -156,8 +160,9 @@ def PostItem(request, post_id):
     return render(request, 'wschatapp/post-item.html', 
         {'usuario_info': usuario_info,
          'post': post, 
-         'posts_salvos': posts_salvos,
          'comentarios_post': comentarios_post,
+         'posts_salvos': posts_salvos,
+         'posts_curtidos': posts_curtidos,
          'curtidas_post': curtidas_post,
          'usuario': usuario})
 
@@ -191,7 +196,9 @@ def PostsSalvos(request):
     return render(request, 'wschatapp/posts-salvos.html', {
         'usuario': usuario ,
         'usuario_info': usuario_info, 
-        'posts': posts
+        'posts': posts,
+        'posts_salvos': posts_salvos,
+        'posts_curtidos': posts_curtidos
     })
 
 
@@ -202,7 +209,10 @@ def MeusPosts(request):
     return render(request, 'wschatapp/meus-posts.html', {
         'meus_posts': meus_posts, 
         'usuario_info': usuario_info, 
-        'usuario': usuario
+        'usuario': usuario,
+        'posts_salvos': posts_salvos,
+        'posts_curtidos': posts_curtidos,
+        'rota_meus_posts': True
     })
 
 
@@ -210,7 +220,12 @@ def NovoPost(request):
     verificar_autenticacao(request)
     variaveis_globais(request)
 
-    return render(request, 'wschatapp/novo-post.html')
+    return render(request, 'wschatapp/novo-post.html', {
+        'usuario':usuario, 
+        'usuario_info': usuario_info,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores
+    })
 
 
 def SalvarPostNovo(request):

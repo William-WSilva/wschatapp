@@ -6,13 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/rede.css' %}">
     <title>rede</title>
-
 </head>
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
     </div>
-
     <hr>
     <section>
         <div class="rede">
@@ -35,7 +33,7 @@
                             <img src="{{ seguidor.usuarioinfo.foto_perfil.url }}" alt="">
                             <li>{{ seguidor }}</li>
                         </a>
-                        {% endfor %}
+                    {% endfor %}
                 </ul>
             </div>
         </div>

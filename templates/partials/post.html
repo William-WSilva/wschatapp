@@ -20,16 +20,21 @@
         <button type="submit">📝 Comentar</button>
     </form>
     <div>
-        {% if post.id in posts_curtidos %}
-            <a href="{% url 'nao-curtir' post.id %}">Curtido</a>
+        {% if rota_meus_posts %}
+            <a href="{% url 'editar-post' post.id %}">Editar</a>
+            <a href="{% url 'deletar-post' post.id %}">Deletar</a>
         {% else %}
-            <a href="{% url 'curtir-post' post.id %}">Curtir</a>
-        {% endif %}
-        
-        {% if post.id in posts_salvos %}
-            <a href="{% url 'nao-salvar-post' post.id %}">Salvo</a>
-        {% else %}
-            <a href="{% url 'salvar-post' post.id %}">+ Salvar</a>
-        {% endif %}
+            {% if post.id in posts_curtidos %}
+                <a href="{% url 'nao-curtir' post.id %}">Curtido</a>
+            {% else %}
+                <a href="{% url 'curtir-post' post.id %}">Curtir</a>
+            {% endif %}
+            
+            {% if post.id in posts_salvos %}
+                <a href="{% url 'nao-salvar-post' post.id %}">Salvo</a>
+            {% else %}
+                <a href="{% url 'salvar-post' post.id %}">+ Salvar</a>
+            {% endif %}
+        {% endif %}  
     </div>
 </li>
