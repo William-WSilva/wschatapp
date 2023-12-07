@@ -30,7 +30,7 @@ form button {
     color: #fff;
     font-size: 18px;
     margin-top: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 form a {
@@ -45,6 +45,12 @@ form a {
     justify-content: center;
     align-items: center;
     text-decoration: none;
+    margin-bottom: 12px;
+}
+
+form hr {
+    margin-top: 12px;
+    margin-bottom: 4px;
 }
 
 
@@ -61,6 +67,7 @@ form a {
     background-color: #df7f25;
     color: #fff;
     font-weight: bold;
+    border: 1px solid #ccc;
     border-radius: 4px;
     text-decoration: none;
     margin-bottom: 18px;

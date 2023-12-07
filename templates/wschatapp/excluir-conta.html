@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/excluir-conta.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
+    <title>Excluir Conta</title>
+</head>
+<body>
+    <div class="container">
+        {% include 'partials/header.html' %}   
+        <main>
+            <section class="banner">
+                <h3>!!! Atenção, deseja mesmo excluir conta ???</h3>
+                <div>
+                    <a class="btn-orange" href="{% url 'config' %}">Não! Voltar</a>
+                    <form action="{% url 'excluir-conta-autorizado' usuario.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-red" title="Excluir conta">Sim! Excluir minha conta</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

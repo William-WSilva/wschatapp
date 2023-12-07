@@ -7,7 +7,8 @@ from wschatapp.views import \
     SeguirUsuario, NaoSeguirUsuario, NaoSalvarPost, \
     ComentarPost, CurtirPost, SalvarPostNovo, \
     EditarPost, DeletarPost, SalvarPostEditado, \
-    DeletarComentario, NaoCurtir, PesquisarUsuarios
+    DeletarComentario, NaoCurtir, PesquisarUsuarios, \
+    ExcluirContaConfirmar, ExcluirContaAutorizado
 
 urlpatterns = [
     path("perfil-pessoal/", PerfilPessoal, name='perfil-pessoal'),
@@ -19,6 +20,8 @@ urlpatterns = [
     path("salvar-post-novo/", SalvarPostNovo, name='salvar-post-novo'),
     path("buscar-usuarios/", BuscarUsuarios, name='buscar-usuarios'),
     path("pesquisar-usuarios/", PesquisarUsuarios, name='pesquisar-usuarios'),
+    path("excluir-conta-confirmar/", ExcluirContaConfirmar, name='excluir-conta-confirmar'),
+    path("excluir-conta-autorizado/<int:user_id>", ExcluirContaAutorizado, name='excluir-conta-autorizado'),
     path("perfil-usuario/<int:user_id>", PerfilUsuario, name='perfil-usuario'),
     path("post-item/<int:post_id>", PostItem, name='post-item'),
     path("salvar-post/<int:post_id>", SalvarPost, name='salvar-post'),

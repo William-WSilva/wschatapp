@@ -6,6 +6,12 @@ from django.contrib import auth, messages # biblioteca para autenticacao e mensa
 from usuarios.forms import LoginForms, CadastroForms
 from wschatapp.models import UsuarioInfo
 
+def verificar_autenticacao(request): # Verificar se usuario está logado
+    if not request.user.is_authenticated:
+        messages.error(request, 'Usuário não logado')
+        return redirect('login')
+
+
 def home(request):
     return render(request, 'usuarios/home.html')
 
@@ -83,3 +89,5 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'Logout efetuado com sucesso')
     return redirect('login')
+
+

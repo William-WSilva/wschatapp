@@ -394,3 +394,31 @@ def NaoCurtir(request, post_id):
     post_curtido.delete()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def ExcluirContaConfirmar(request):
+    verificar_autenticacao(request)
+    variaveis_globais(request)
+
+    return render(request, 'wschatapp/excluir-conta.html', {
+        'usuario':usuario, 
+        'usuario_info': usuario_info,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores
+    })
+
+
+def ExcluirContaAutorizado(request, user_id):
+    verificar_autenticacao(request)
+    usuario = User.objects.get(pk=user_id)
+
+    if request.method == 'POST':
+        if request.user == usuario: # verifica se o usuario logado é igual ao usuarioid enviado da requisição
+            usuario.delete()
+            messages.success(request, 'Sua conta foi excluída com sucesso.')
+            return redirect('logout')
+        else:
+            messages.error(request, 'Você não tem permissão para excluir esta conta.')
+            return redirect('config')
+    else:
+        return render(request, 'wschatapp/login.html')

@@ -7,6 +7,7 @@ form {
 form textarea {
     margin-top: 16px;
     resize: vertical;
+    padding: 4px;
 }
 
 form input {

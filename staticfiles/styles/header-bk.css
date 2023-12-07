@@ -15,13 +15,13 @@ body {
     width: 900px;
     display: flex;
     flex-direction: column;
-    border: solid 1px #ddd;
 }
 
 /* Menu */
 
 header {
     position: fixed;
+    top: 0;
     max-width: 900px;
     height: 120px;
     width: 100%;

@@ -2,7 +2,7 @@
 
 main {
     width: 900px;
-    height: 99.4vh;
+    height: 100vh;
     padding-top: 140px;
     display: flex;
     flex-direction: column;
@@ -33,15 +33,15 @@ main {
     list-style: none;
 }
 
-.card-post hr {
-    margin-top: 8px;
-}
-
 .foto-perfil {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     margin-right: 16px;
+}
+
+.card-post hr {
+    margin-top: 8px;
 }
 
 .post-info {
@@ -55,7 +55,7 @@ main {
 
 }
 
-.post-info h5 {
+.post-info h6 {
     font-size: 16px;
 }
 
@@ -70,10 +70,17 @@ main {
     padding: 0;
 }
 
-.card-post p {
+.card-descricao summary {
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.card-descricao {
     margin-top: 16px;
-    height: 40px;
+    min-height: 40px;
     border: solid 1px #ddd;
+    border-radius: 4px;
+    padding: 8px;
 }
 
 .link-post{

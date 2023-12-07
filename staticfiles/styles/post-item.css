@@ -65,7 +65,7 @@ summary {
     cursor: pointer;
     padding: 4px;
     border: solid 1px #fff;
-    background-color: #3ea6bb;
+    background-color: #aac9e2;
     border-radius: 4px;
 }
 
@@ -82,12 +82,12 @@ summary {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: #fff;
+    color: #000;
     font-size: 18px;
 }
 
 .curtidas-list {
-    margin-top: 16px;
+    margin-top: 12px;
     height: 95%;
     overflow-y: auto;
 }
@@ -97,9 +97,10 @@ summary {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: #fff;
+    color: #000;
     font-size: 18px;
-    background-color: #3ea6bb;
+    border: solid 1px #fff;
+    background-color: #aac9e2;
     border-radius: 4px;
     padding: 4px;
 }
