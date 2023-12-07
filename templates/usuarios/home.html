@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/home-login-cadastro.css' %}">
+    <title>WsChatapp</title>
+</head>
+<body>
+    <main>
+        <div class="bk-home">
+            <h1>WsChatApp</h1>
+            <img class="baner-home" src="{% static 'assets/img/galeria-de-fotos.gif' %}" alt="">
+            <a class="btn-acessar" href="{% url 'login' %}">Acessar</a>
+        </div>
+    </main>
+</body>
+</html>

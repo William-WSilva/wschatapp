@@ -63,9 +63,24 @@ form a {
     font-weight: bold;
     border-radius: 4px;
     text-decoration: none;
-    margin-bottom: 12px;
+    margin-bottom: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
-   
+}
+
+.config-action a:nth-child(1) {
+    margin-top: 26px;
+}
+
+.selecionar-arquivo-imagem {
+    height: 38px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #df7f25;
+    color: #fff;
+    margin-top: 8px;
 }

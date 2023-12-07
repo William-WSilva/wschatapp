@@ -7,13 +7,18 @@
     {% endif %}
     <div class="header-info">
         {% if rota_perfil_usuario %}
-            <h3>Perfil Usuario: {{ outro_usuario_info.usuario }}</h3>
+            <h3>Usuario: {{ outro_usuario_info.usuario }}</h3>
         {% else %}
             <h3>{{ usuario.username }}</h3>
         {% endif %}
         <div>
-            <h4>Seguindo: {{ qtd_seguidos }}</h4>
-            <h4>Seguidores: {{ qtd_seguidores }}</h4>
+            {% if rota_perfil_usuario %}
+                <h4>Seguindo: {{ qtd_seguidos_outro_usuario }}</h4>
+                <h4>Seguidores: {{ qtd_seguidores_outro_usuario }}</h4>
+            {% else %}
+                <h4>Seguindo: {{ qtd_seguidos }}</h4>
+                <h4>Seguidores: {{ qtd_seguidores }}</h4>
+            {% endif %}
         </div>
     </div>
     <div class="header-action">

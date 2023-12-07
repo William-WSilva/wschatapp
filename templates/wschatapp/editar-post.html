@@ -14,18 +14,21 @@
     <div class="container">
         {% include 'partials/header.html' %}
         <main>
-            <ul>
-                <li class="post">
+            <ul class="lista-post">
+                <li class="card-post">
                     <div class="post-info">
-                        <img src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
+                        <img class="foto-perfil" src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
                         <h4>{{ post.usuario }}</h4>
-                        <h5>Data: {{ post.data_hora }}</h5>
+                        <h5>Ultima Edição: {{ post.data_hora|date:"d/m/y H:i" }}</h5>
                     </div>
                     <hr>
                     <form action="{% url 'salvar-post-editado' post.id %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <textarea placeholder="Descrição Postagem:" name="descricao">{{post.descricao}}</textarea>
-                        <input type="file" name="imagem"> <!-- Campo para escolher o arquivo de imagem -->
+                        <label for="inputFile" class="selecionar-arquivo-imagem">
+                            <span>Imagem Post: </span>
+                            <input type="file" id="inputFile" name="imagem" />
+                        </label>
                         <img class="foto-post" src="{{ post.imagem.url }}">
                         <button type="submit">Salvar</button>
                     </form>

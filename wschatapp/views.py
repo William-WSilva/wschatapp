@@ -63,13 +63,18 @@ def PerfilUsuario(request, user_id):
     posts_usuario = Post.objects.filter(usuario=outro_usuario)
     esta_seguindo = Rede.objects.filter(usuario=usuario, seguido=outro_usuario).exists() # Verifica se já estou seguindo o outro_usuario
     
+    qtd_seguidos_outro_usuario = Rede.objects.filter(usuario=outro_usuario).exclude(seguido__isnull=True).count() # qtd de usuarios que o outro_usuario segue
+    qtd_seguidores_outro_usuario = Rede.objects.filter(usuario=outro_usuario).exclude(seguidor__isnull=True).count() # qtd de usuarios que seguem o outro_usuario
+
     return render(request, 'wschatapp/perfil-usuario.html',{
         'esta_seguindo': esta_seguindo,
         'posts_usuario': posts_usuario, 
         'outro_usuario_info': outro_usuario_info, 
         'posts_salvos': posts_salvos,
         'posts_curtidos': posts_curtidos,
-        'rota_perfil_usuario': True
+        'rota_perfil_usuario': True,
+        'qtd_seguidos_outro_usuario': qtd_seguidos_outro_usuario,
+        'qtd_seguidores_outro_usuario': qtd_seguidores_outro_usuario,
     })
 
 
@@ -145,7 +150,9 @@ def MinhaRede(request):
         'usuarios_seguidos': usuarios_seguidos, 
         'usuarios_seguidores': usuarios_seguidores, 
         'usuario':usuario, 
-        'usuario_info': usuario_info
+        'usuario_info': usuario_info,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
     })
 
 
@@ -198,7 +205,9 @@ def PostsSalvos(request):
         'usuario_info': usuario_info, 
         'posts': posts,
         'posts_salvos': posts_salvos,
-        'posts_curtidos': posts_curtidos
+        'posts_curtidos': posts_curtidos,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
     })
 
 
@@ -212,7 +221,9 @@ def MeusPosts(request):
         'usuario': usuario,
         'posts_salvos': posts_salvos,
         'posts_curtidos': posts_curtidos,
-        'rota_meus_posts': True
+        'rota_meus_posts': True,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
     })
 
 
@@ -236,7 +247,7 @@ def SalvarPostNovo(request):
         descricao = request.POST.get('descricao') # campo descrição form 
         imagem = request.FILES.get('imagem') # campo imagem form 
 
-        if descricao: # descrição obrigatória
+        if descricao: # descrição obrigatória para salvar novo post
             if imagem:
                 novo_post = Post(usuario=request.user, descricao=descricao, imagem=imagem) # salva novo post com imagem escolhida
             else:
@@ -256,7 +267,13 @@ def EditarPost(request, post_id):
     
     post = get_object_or_404(Post, pk=post_id) # post selecionado
 
-    return render(request, 'wschatapp/editar-post.html', {'post': post})
+    return render(request, 'wschatapp/editar-post.html', {
+        'usuario':usuario, 
+        'usuario_info': usuario_info,
+        'post': post,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores
+    })
 
 
 def SalvarPostEditado(request, post_id):
@@ -301,7 +318,9 @@ def BuscarUsuarios(request):
     return render(request, 'wschatapp/buscar-usuarios.html', {
         'usuario_info': usuario_info,
         'usuario': usuario,
-        'usuarios_cadastrados': usuarios_cadastrados
+        'usuarios_cadastrados': usuarios_cadastrados,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
     })
 
 

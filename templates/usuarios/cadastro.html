@@ -4,26 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'styles/cadastro.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/home-login-cadastro.css' %}">
     <title>Cadastro</title>
 </head>
 <body>
-    <h1>Cadastro</h1>
-    <hr>
-    {% include 'partials/_alertas.html' %}
-    <form action="{% url 'cadastro' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}   <!-- segurança de formulários -->
-        <input type="file" name="foto_perfil">
-        {% for field in form.visible_fields %}
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% for error in field.errors %} <!-- Mensagem erro nom de usuario -->
+    <main>
+        <div class="bk-home">
+            {% include 'partials/_alertas.html' %}
+            <a class="link-home" href="{% url 'home' %}" title="Acessar Home">
+                <img src="{% static 'assets/img/Home-icon.png' %}" alt="">
+            </a>
+            <h1>Cadastro</h1>
+            <form action="{% url 'cadastro' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}   <!-- segurança de formulários -->
+                {% for field in form.visible_fields %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %} <!-- Mensagem erro nom de usuario -->
                 <div>
                     {{error}}
                 </div>
-            {% endfor%}
-        {% endfor %}
-        <button type="submit">Cadastrar</button>
-    </form>    
+                {% endfor%}
+                {% endfor %}
+                <button type="submit">Cadastrar</button>
+            </form>    
+        </div>
+    </main>
 </body>
 </html>

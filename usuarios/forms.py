@@ -15,14 +15,23 @@ class LoginForms(forms.Form):
         label='Senha',
         required=True,
         max_length=70,
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(
+            attrs={
+                'placeholder': "********"
+            }
+        ),
     )
 
 
 class CadastroForms(forms.Form):
     foto_perfil = forms.ImageField(
         label='Foto de Perfil',
-        required=False
+        required=False,
+        widget=forms.FileInput(
+            attrs={
+                'class': 'selecionar-arquivo-imagem'
+            }
+        )
     )
     nome_usuario=forms.CharField(
         label='Nome Usuario',

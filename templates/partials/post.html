@@ -3,12 +3,15 @@
     <div class="post-info">
         <a href="{% url 'perfil-usuario' post.usuario.id %}">
             <img class="foto-perfil" src="{{ post.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto de perfil">
-            <h4>{{ post.usuario }}</h4>
+            <h5>{{ post.usuario }}</h5>
         </a>
-        <h5>Data: {{ post.data_hora|date:"d/m/y H:i" }}</h5>
+        <h6>Data: {{ post.data_hora|date:"d/m/y H:i" }}</h6>
     </div>
     <hr>
-    <p>{{ post.descricao }}</p>
+    <details class="card-descricao">
+        <summary>Descrição: {{ post.usuario }}:...</summary>
+        <p>{{ post.descricao }}</p>
+    </details>
     <a class="link-post" href="{% url 'post-item' post.id %}">
         <img class="foto-post" src="{{ post.imagem.url }}">
         <span>{{ post.qtd_comentarios }} Comentário</span>

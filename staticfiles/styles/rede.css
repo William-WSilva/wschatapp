@@ -1,84 +1,54 @@
-* {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-}
-
-.container {
-    width: 100%;
+.rede {
     display: flex;
-    justify-content: center;
-}
-
-img {
-    border-radius: 50%;
-    width: 80px;
-}
-
-a {
-    border: solid 1px #000;
-    height: 40px;
-    background-color: rgb(38, 152, 222);
-    color: white;
-    padding: 4px;
-    border-radius: 4px;
-    text-align: center;
-    margin: 8px;
-    text-decoration: none;
-}
-
-hr {
-    margin: 12px 0;
-}
-
-header{
-    display: flex;
-    justify-content: space-between;
     width: 600px;
-    height: 100px;
+    overflow-y: auto;
+    height: 95%;
+}
+
+.rede h3 {
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.rede hr {
+    margin-bottom: 16px;
+}
+
+.rede img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+    margin-right: 16px;
+}
+
+.rede-categoria {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    overflow-y: auto;
+    border: solid 1px #fff;
+    border-radius: 4px;
+    margin-right: 8px;
     padding: 8px;
-    margin-bottom: 40px;
-    background-color: #d9d9d9;
-}
-
-.header-info {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.header-action {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-}
-
-.header-nav {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-section {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-section div {
-    width: 100%;
-    text-align: center;
 }
 
 .card-usuario {
     display: flex;
-    width: 300px;
-    border: solid 1px #000;
+    align-items: center;
+    border: solid 1px #fff;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    padding: 4px;
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
 }
 
-.card-usuario img {
-    width: 40px;
+.card-usuario:hover {
+    background-color: #df7f25;
+}
+
+.card-usuario li {
+    list-style: none;
 }

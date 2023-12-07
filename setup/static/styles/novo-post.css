@@ -6,6 +6,8 @@ form {
 
 form textarea {
     margin-top: 16px;
+    resize: vertical;
+    padding: 4px;
 }
 
 form input {
@@ -25,11 +27,12 @@ form button {
     margin-bottom: 4px;
 }
 
-.custom-file-upload {
+.selecionar-arquivo-imagem {
     border: 1px solid #ccc;
     display: inline-block;
     padding: 8px 12px;
     cursor: pointer;
     border-radius: 4px;
     background-color: #53b781;
+    color: #fff;
 }

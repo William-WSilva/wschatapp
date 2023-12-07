@@ -6,13 +6,17 @@ from django.contrib import auth, messages # biblioteca para autenticacao e mensa
 from usuarios.forms import LoginForms, CadastroForms
 from wschatapp.models import UsuarioInfo
 
+def home(request):
+    return render(request, 'usuarios/home.html')
+
+
 def login(request):
     form = LoginForms()
 
-    if request.method == 'POST': # Se o método de envio é POST
+    if request.method == 'POST':
         form = LoginForms(request.POST) # Requisições POST
         
-        if form.is_valid(): # Se os campos são válidos
+        if form.is_valid():
             nome=form['nome_login'].value()
             senha=form['senha'].value()
 
@@ -37,10 +41,10 @@ def login(request):
 def cadastro(request):
     form = CadastroForms()
 
-    if request.method == 'POST': #Se o método de envio é POST
+    if request.method == 'POST':
         form = CadastroForms(request.POST, request.FILES) # Requisições POST e arquivos
 
-        if form.is_valid(): # Se os campos são válidos
+        if form.is_valid():
             form_cleaned = form.cleaned_data
             nome_usuario = form_cleaned['nome_usuario']
             sobrenome = form_cleaned['sobrenome']
@@ -51,7 +55,7 @@ def cadastro(request):
                 messages.error(request, 'Usuario já cadastrado')
                 return redirect('cadastro') # Redireciona para a rota cadastro
 
-            # Salvar novo usuário na tabela User
+            # Registrar novo usuário na tabela User
             usuario = User.objects.create_user(
                 username=nome_usuario,
                 last_name=sobrenome,
@@ -60,17 +64,17 @@ def cadastro(request):
             )
             usuario.save()
 
-            # Salvar a imagem de perfil na tabela UsuarioInfo
+            # Registrar imagem de perfil na tabela UsuarioInfo
             foto_perfil = request.FILES.get('foto_perfil')
             if foto_perfil:
                 usuario_info = UsuarioInfo.objects.create(usuario=usuario, foto_perfil=foto_perfil)
             else:
                 caminho_imagem_padrao = 'imagem/foto_padrao.jpg'
                 usuario_info = UsuarioInfo.objects.create(usuario=usuario, foto_perfil=caminho_imagem_padrao)
-            usuario_info.save()  # Salva alterações na tabela UsuarioInfo
+            usuario_info.save()
 
             messages.success(request, 'Cadastro realizado com sucesso')
-            return redirect('login') # Redireciona para a rota login
+            return redirect('login')
         
     return render(request, 'usuarios/cadastro.html', {'form': form})
 
