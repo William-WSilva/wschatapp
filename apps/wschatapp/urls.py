@@ -1,5 +1,5 @@
 from django.urls import path
-from wschatapp.views import \
+from apps.wschatapp.views import \
     PerfilPessoal, \
     PerfilUsuario, Config, MinhaRede, \
     PostsSalvos, SalvarPost, MeusPosts, \

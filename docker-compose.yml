@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: container-postgres-wschatapp  # Define o nome do contêiner como 'some-postgres'
+    environment:
+      POSTGRES_DB: wschatappdb  # Nome do banco de dados PostgreSQL
+      POSTGRES_USER: postgresuser    # Nome de usuário do PostgreSQL
+      POSTGRES_PASSWORD: postgrepassword  # Senha do PostgreSQL
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db

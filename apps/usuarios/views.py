@@ -3,8 +3,8 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import auth, messages # biblioteca para autenticacao e mensagens
-from usuarios.forms import LoginForms, CadastroForms
-from wschatapp.models import UsuarioInfo
+from apps.usuarios.forms import LoginForms, CadastroForms
+from apps.wschatapp.models import UsuarioInfo
 
 def verificar_autenticacao(request): # Verificar se usuario está logado
     if not request.user.is_authenticated:

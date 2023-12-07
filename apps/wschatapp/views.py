@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib import messages
-from usuarios.forms import CadastroForms
-from wschatapp.models import Comentario, Curtida, Post, Rede, UsuarioInfo, PostSalvo
+from apps.usuarios.forms import CadastroForms
+from apps.wschatapp.models import Comentario, Curtida, Post, Rede, UsuarioInfo, PostSalvo
 
 def verificar_autenticacao(request): # Verificar se usuario está logado
     if not request.user.is_authenticated:

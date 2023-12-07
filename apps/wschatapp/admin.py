@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comentario, Curtida, Rede, PostSalvo, UsuarioInfo
+from apps.wschatapp.models import Post, Comentario, Curtida, Rede, PostSalvo, UsuarioInfo
 
 @admin.register(UsuarioInfo)
 class UsuarioInfoAdmin(admin.ModelAdmin):

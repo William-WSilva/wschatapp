@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class WschatappConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "wschatapp"
+    name = "apps.wschatapp"
