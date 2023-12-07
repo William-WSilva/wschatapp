@@ -13,10 +13,11 @@
     <div class="container">
         {% include 'partials/header.html' %}
         <hr>
-        <section>
+        <main>
             <div class="rede">
-                <div class="div-seguindo">
+                <div class="rede-categoria">
                     <h3>Seguindo</h3>
+                    <hr>
                     <ul>
                         {% for seguido in usuarios_seguidos %}
                         <a class="card-usuario" href="{% url 'perfil-usuario' seguido.id %}">
@@ -26,8 +27,9 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="div-seguindores">
+                <div class="rede-categoria">
                     <h3>Seguidores</h3>
+                    <hr>
                     <ul>
                         {% for seguidor in usuarios_seguidores %}
                         <a class="card-usuario" href="{% url 'perfil-usuario' seguidor.id %}">
@@ -38,7 +40,7 @@
                     </ul>
                 </div>
             </div>
-        </section>
+        </main>
     </div>
 </body>
 </html>

@@ -12,14 +12,13 @@
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-        <hr>
-        <section>
-            <ul>
+        <main>
+            <ul class="lista-post">
                 {% for post in posts_usuario %}
                 {% include 'partials/post.html' %}
                 {% endfor %}
             </ul>
-        </section>
+        </main>
     </div>
 </body>
 </html>

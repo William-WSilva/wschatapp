@@ -2,7 +2,7 @@
 
 main {
     width: 900px;
-    height: 99.7vh;
+    height: 99.4vh;
     padding-top: 140px;
     display: flex;
     flex-direction: column;
@@ -12,6 +12,7 @@ main {
 
 .lista-post {
     width: 100%;
+    height: 100%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -32,7 +33,6 @@ main {
     list-style: none;
 }
 
-
 .card-post hr {
     margin-top: 8px;
 }
@@ -42,7 +42,6 @@ main {
     height: 40px;
     border-radius: 50%;
     margin-right: 16px;
-    margin-bottom: 8px;
 }
 
 .post-info {
@@ -67,6 +66,8 @@ main {
     font-size: 24px;
     text-decoration: none;
     color: #175593;
+    margin: 0;
+    padding: 0;
 }
 
 .card-post p {
@@ -131,10 +132,12 @@ main {
     align-items: center;
 }
 
-.interacao-post .btn-ativo {
+.interacao-post .btn-green {
     background-color: #53b781;
 }
-
-.interacao-post .btn-deletar {
-    background-color: #b75a53;
+.interacao-post .btn-red {
+    background-color: #e06767;
+}
+.interacao-post .btn-orange {
+    background-color: #df7f25;
 }

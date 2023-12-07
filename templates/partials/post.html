@@ -21,17 +21,17 @@
     </form>
     <div class="interacao-post">
         {% if rota_meus_posts %}
-            <a href="{% url 'editar-post' post.id %}">Editar</a>
-            <a class="btn-deletar" href="{% url 'deletar-post' post.id %}">Deletar</a>
+            <a class="btn-orange" href="{% url 'editar-post' post.id %}">Editar</a>
+            <a class="btn-red" href="{% url 'deletar-post' post.id %}">Deletar</a>
         {% else %}
             {% if post.id in posts_curtidos %}
-                <a class="ativo" href="{% url 'nao-curtir' post.id %}">Curtido</a>
+                <a class="btn-green" href="{% url 'nao-curtir' post.id %}">Curtiu</a>
             {% else %}
                 <a href="{% url 'curtir-post' post.id %}">Curtir</a>
             {% endif %}
             
             {% if post.id in posts_salvos %}
-                <a class="btn-ativo" href="{% url 'nao-salvar-post' post.id %}">Salvo</a>
+                <a class="btn-green" href="{% url 'nao-salvar-post' post.id %}">Salvo</a>
             {% else %}
                 <a href="{% url 'salvar-post' post.id %}">+ Salvar</a>
             {% endif %}

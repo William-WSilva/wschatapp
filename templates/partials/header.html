@@ -19,12 +19,12 @@
     <div class="header-action">
         {% if rota_perfil_usuario %}
             {% if esta_seguindo %}
-            <a href="{% url 'nao-seguir-usuario' outro_usuario_info.usuario.id %}">- Não Seguir</a>
+            <a class="btn-red" href="{% url 'nao-seguir-usuario' outro_usuario_info.usuario.id %}">- Não Seguir</a>
             {% else %}
-                <a href="{% url 'seguir-usuario' outro_usuario_info.usuario.id %}">+ Seguir</a>
+                <a class="btn-green" href="{% url 'seguir-usuario' outro_usuario_info.usuario.id %}">+ Seguir</a>
             {% endif %}
         {% else %}
-            <a href="{% url 'novo-post' %}">+ Novo Post</a>
+            <a class="btn-green" href="{% url 'novo-post' %}">+ Novo Post</a>
         {% endif %}
     </div>
     <nav class="header-nav">
