@@ -26,12 +26,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'django_extensions',
-    "rest_framework",
     "apps.wschatapp.apps.WschatappConfig",
     "apps.usuarios.apps.UsuariosConfig",
     'debug_toolbar',
-    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
