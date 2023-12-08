@@ -10,10 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!d6=9(sp36_x)e&72^9&g=p7i5!wtr2y(+cg-i=8(az+t4z!0'
+SECRET_KEY = os.getenv('SECRET_KEY', default='admin')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.getenv('DEBUG', default=0))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'projeto-wschatapp-8e4668852be4.herokuapp.com']
 
@@ -68,12 +68,12 @@ WSGI_APPLICATION = "setup.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wschatappdb',  # Nome do banco de dados no PostgreSQL
-        'USER': 'wsilva',      # Nome de usuário do PostgreSQL
-        'PASSWORD': 'adminadmin',  # Senha do PostgreSQL
-        'HOST': 'db',          # Nome do serviço do banco de dados no Docker Compose
-        'PORT': '5432',        # Porta padrão do PostgreSQL
+        'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.getenv('DATABASE_NAME', os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.getenv('DATABASE_USER', 'user'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
