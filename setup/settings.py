@@ -27,9 +27,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'debug_toolbar',
     "apps.wschatapp.apps.WschatappConfig",
     "apps.usuarios.apps.UsuariosConfig",
-    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
