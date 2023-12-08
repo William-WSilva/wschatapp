@@ -9,7 +9,7 @@ from apps.wschatapp.models import UsuarioInfo
 def verificar_autenticacao(request): # Verificar se usuario está logado
     if not request.user.is_authenticated:
         messages.error(request, 'Usuário não logado')
-        return redirect('login')
+        return render(request, 'usuarios/login.html')
 
 
 def home(request):

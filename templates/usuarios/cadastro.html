@@ -18,13 +18,13 @@
             <form action="{% url 'cadastro' %}" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}   <!-- segurança de formulários -->
                 {% for field in form.visible_fields %}
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% for error in field.errors %} <!-- Mensagem erro nom de usuario -->
-                <div>
-                    {{error}}
-                </div>
-                {% endfor%}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %} <!-- Mensagem erro nom de usuario -->
+                        <div>
+                            {{error}}
+                        </div>
+                    {% endfor%}
                 {% endfor %}
                 <button type="submit">Cadastrar</button>
             </form>    

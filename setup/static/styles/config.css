@@ -13,12 +13,16 @@ form {
 }
 
 form input {
-    height: 32px;
+    height: 28px;
     padding: 4px;
     border-radius: 4px;
     margin-bottom: 8px;
     font-size: 14px;
     border: none;
+}
+
+form label {
+    font-size: 12px;
 }
 
 form button {

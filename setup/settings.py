@@ -1,5 +1,4 @@
 import os
-import django_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -10,13 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!d6=9(sp36_x)e&72^9&g=p7i5!wtr2y(+cg-i=8(az+t4z!0'
+SECRET_KEY = "django-insecure-yskg!_(rz_!k^c%n5fxl!tgde8j!6wn5t4=078ss&-xe676z"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'projeto-wschatapp-8e4668852be4.herokuapp.com']
-
+CSRF_TRUSTED_ORIGINS = ['https://projeto-wschatapp-8e4668852be4.herokuapp.com',]
 
 # Application definition
 
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.wschatapp.apps.WschatappConfig",
     "apps.usuarios.apps.UsuariosConfig",
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -39,7 +40,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "setup.urls"
@@ -61,6 +63,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "setup.wsgi.application"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Database
@@ -118,16 +122,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'setup/static')
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL =  '/media/'
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-django_heroku.settings(locals())
