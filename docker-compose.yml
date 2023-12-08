@@ -3,11 +3,11 @@ version: '3'
 services:
   db:
     image: postgres:latest
-    container_name: container-postgres-wschatapp  # Define o nome do contêiner como 'some-postgres'
+    container_name: container-wschatapp  # Define o nome do contêiner como container-wschatapp
     environment:
       POSTGRES_DB: wschatappdb  # Nome do banco de dados PostgreSQL
-      POSTGRES_USER: postgresuser    # Nome de usuário do PostgreSQL
-      POSTGRES_PASSWORD: postgrepassword  # Senha do PostgreSQL
+      POSTGRES_USER: wsilva    # Nome de usuário do PostgreSQL
+      POSTGRES_PASSWORD: adminadmin  # Senha do PostgreSQL
 
   web:
     build: .

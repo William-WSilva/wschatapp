@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3$=*0+2m^o3$#%zcfa7$3h1%vf$1k3oqlc^asnz_00xz077g!&"
+SECRET_KEY = os.getenv('SECRET_KEY', 'adminadmin')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -65,9 +65,13 @@ WSGI_APPLICATION = "setup.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'wschatappdb',  # Nome do banco de dados no PostgreSQL
+        'USER': 'wsilva',      # Nome de usuário do PostgreSQL
+        'PASSWORD': 'adminadmin',  # Senha do PostgreSQL
+        'HOST': 'db',          # Nome do serviço do banco de dados no Docker Compose
+        'PORT': '5432',        # Porta padrão do PostgreSQL
     }
 }
 
