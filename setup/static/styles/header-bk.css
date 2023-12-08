@@ -24,7 +24,7 @@ header {
     position: fixed;
     top: 0;
     max-width: 900px;
-    height: 120px;
+    height: 100px;
     width: 100%;
     background-image: linear-gradient(to bottom,#001358, #175593);
     display: flex;

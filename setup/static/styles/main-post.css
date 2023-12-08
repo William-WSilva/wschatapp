@@ -3,7 +3,7 @@
 main {
     width: 900px;
     height: 100vh;
-    padding-top: 140px;
+    padding-top: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,7 +24,7 @@ main {
   }
 
 .card-post {
-    width: 600px;
+    width: 500px;
     border: solid 1px #ddd;
     background-color: #f9f9fb;
     margin-bottom: 24px;
