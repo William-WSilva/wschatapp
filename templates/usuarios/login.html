@@ -19,14 +19,13 @@
             <form action="{% url 'login' %}" method="POST">
                 {% csrf_token %}   <!-- segurança de formularios -->
                 {% for field in form.visible_fields %}
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
                 {% endfor %}
                 <button type="submit">Login</button>
                 <a href="{% url 'cadastro' %}">Cadastrar</a>
             </form>
         </div>
     </main>
-    
 </body>
 </html>

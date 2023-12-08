@@ -102,3 +102,16 @@ header > img {
     align-items: center;
     font-size: 28px;
 }
+
+p > #messages {
+    border: solid 1px #fff;
+    border-radius: 4px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    background: #df7f25;
+    margin: 8px;
+    color: #fff;
+}

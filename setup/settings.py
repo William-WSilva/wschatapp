@@ -1,3 +1,4 @@
+from distutils import config
 import os
 from pathlib import Path
 
@@ -9,12 +10,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'adminadmin')
+SECRET_KEY = config('SECRET_KEY', default='adminadmin')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -66,12 +67,12 @@ WSGI_APPLICATION = "setup.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wschatappdb',  # Nome do banco de dados no PostgreSQL
-        'USER': 'wsilva',      # Nome de usuário do PostgreSQL
-        'PASSWORD': 'adminadmin',  # Senha do PostgreSQL
-        'HOST': 'db',          # Nome do serviço do banco de dados no Docker Compose
-        'PORT': '5432',        # Porta padrão do PostgreSQL
+        'ENGINE': config('DB_ENGINE', default=''),
+        'NAME': config('POSTGRES_DB', default=''),
+        'USER': config('POSTGRES_USER', default=''),
+        'PASSWORD': config('POSTGRES_PASSWORD', default=''),
+        'HOST': config('POSTGRES_HOST', default=''),
+        'PORT': config('POSTGRES_PORT', default=''),
     }
 }
 
