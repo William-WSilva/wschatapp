@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '!d6=9(sp36_x)e&72^9&g=p7i5!wtr2y(+cg-i=8(az+t4z!0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'projeto-wschatapp-8e4668852be4.herokuapp.com']
 
