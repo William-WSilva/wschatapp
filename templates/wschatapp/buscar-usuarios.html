@@ -25,7 +25,7 @@
                 <ul class="lista-usuarios">
                     {% for usuario in usuarios_cadastrados %}
                     <a class="card-usuario" href="{% url 'perfil-usuario' usuario.usuario.id %}">
-                        <img src="{{ usuario.foto_perfil.url }}" alt="">
+                        <img src="{{ usuario.foto_perfil.url }}" alt="Foto Perfil">
                         <li>{{ usuario.usuario }}</li>
                     </a>
                     {% endfor %}

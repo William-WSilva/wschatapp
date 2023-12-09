@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
     <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
     <link rel="stylesheet" href="{% static 'styles/rede.css' %}">
-    <title>rede</title>
+    <title>Minha Rede</title>
 </head>
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-        <hr>
         <main>
             <div class="rede">
                 <div class="rede-categoria">
@@ -21,7 +20,7 @@
                     <ul>
                         {% for seguido in usuarios_seguidos %}
                         <a class="card-usuario" href="{% url 'perfil-usuario' seguido.id %}">
-                            <img src="{{ seguido.usuarioinfo.foto_perfil.url }}" alt="">
+                            <img src="{{ seguido.usuarioinfo.foto_perfil.url }}" alt="Foto Perfil">
                             <li>{{ seguido }}</li>
                         </a>
                         {% endfor %}
@@ -33,7 +32,7 @@
                     <ul>
                         {% for seguidor in usuarios_seguidores %}
                         <a class="card-usuario" href="{% url 'perfil-usuario' seguidor.id %}">
-                            <img src="{{ seguidor.usuarioinfo.foto_perfil.url }}" alt="">
+                            <img src="{{ seguidor.usuarioinfo.foto_perfil.url }}" alt="Foto Perfil">
                             <li>{{ seguidor }}</li>
                         </a>
                         {% endfor %}

@@ -95,3 +95,14 @@ form hr {
     color: #fff;
     margin-top: 8px;
 }
+
+@media only screen and (max-width: 767px) {
+    main {
+        height: 100%;
+    }
+    section {
+        width: 100%;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+}

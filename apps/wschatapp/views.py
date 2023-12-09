@@ -22,15 +22,15 @@ def variaveis_globais(request): # Variaveis Gerais
     usuario = request.user # informações do usuario logado
     usuario_info = UsuarioInfo.objects.get(usuario=usuario) # Detalhes usuario
     lista_ids_seguidos = Rede.objects.filter(usuario=usuario).values_list('seguido', flat=True) # lista de ids seguidos
-    lista_ids_seguidores = Rede.objects.filter(usuario=usuario).values_list('seguidor', flat=True) # lista de ids seguidores
+    lista_ids_seguidores = Rede.objects.filter(seguido=usuario).values_list('usuario', flat=True) # lista de ids seguidores
     usuarios_seguidos = User.objects.filter(id__in=lista_ids_seguidos) # usuarios seguidos
     usuarios_seguidores = User.objects.filter(id__in=lista_ids_seguidores) # usuarios seguidores
     meus_posts = Post.objects.filter(usuario=usuario) # meus posts publicados
     outros_posts = Post.objects.filter(usuario__in=usuarios_seguidos)# postagens de quem sigo
     posts_salvos = PostSalvo.objects.filter(usuario=usuario).values_list('post__id', flat=True) # posts que eu salvei
     posts_curtidos = Curtida.objects.filter(usuario=usuario).values_list('post__id', flat=True) # posts que eu curti
-    qtd_seguidos = Rede.objects.filter(usuario=usuario).exclude(seguido__isnull=True).count() # qtd de usuarios que sigo
-    qtd_seguidores = Rede.objects.filter(usuario=usuario).exclude(seguidor__isnull=True).count() # qtd de usuarios que me seguem
+    qtd_seguidos = Rede.objects.filter(usuario=usuario).count() # qtd de usuarios que sigo
+    qtd_seguidores = Rede.objects.filter(seguido=usuario).count() # qtd de usuarios que me seguem
     posts = sorted(list(chain(meus_posts, outros_posts)), key=lambda post: post.data_hora, reverse=True)# minhas postagens + de quem sigo
     for post in posts: # Add em posts: qtd de comentarios e curtidas 
         post.qtd_comentarios = Comentario.objects.filter(post=post).count()
@@ -63,8 +63,8 @@ def PerfilUsuario(request, user_id):
     posts_usuario = Post.objects.filter(usuario=outro_usuario)
     esta_seguindo = Rede.objects.filter(usuario=usuario, seguido=outro_usuario).exists() # Verifica se já estou seguindo o outro_usuario
     
-    qtd_seguidos_outro_usuario = Rede.objects.filter(usuario=outro_usuario).exclude(seguido__isnull=True).count() # qtd de usuarios que o outro_usuario segue
-    qtd_seguidores_outro_usuario = Rede.objects.filter(usuario=outro_usuario).exclude(seguidor__isnull=True).count() # qtd de usuarios que seguem o outro_usuario
+    qtd_seguidos_outro_usuario = Rede.objects.filter(usuario=outro_usuario).count() # qtd de usuarios que o outro_usuario segue
+    qtd_seguidores_outro_usuario = Rede.objects.filter(seguido=usuario).count() # qtd de usuarios que seguem o outro_usuario
 
     return render(request, 'wschatapp/perfil-usuario.html',{
         'esta_seguindo': esta_seguindo,
@@ -167,7 +167,6 @@ def PostItem(request, post_id):
     return render(request, 'wschatapp/post-item.html', {
         'usuario': usuario,
         'usuario_info': usuario_info,
-        'posts': posts,
         'post': post, 
         'comentarios_post': comentarios_post,
         'posts_salvos': posts_salvos,

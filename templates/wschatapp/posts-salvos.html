@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'styles/header-bk.css' %}">
     <link rel="stylesheet" href="{% static 'styles/main-post.css' %}">
-    <title>post-salvo</title>
+    <title>Posts Salvos</title>
 </head>
 <body>
     <div class="container">
         {% include 'partials/header.html' %}
-        <hr>
         <main>
             <ul class="lista-post">
                 {% for post in posts %}

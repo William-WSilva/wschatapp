@@ -1,9 +1,9 @@
 /* Main */
 
 main {
-    width: 900px;
-    height: 100vh;
-    padding-top: 120px;
+    width: 100%;
+    height: calc(100vh - 100px);
+    padding-top: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -149,3 +149,12 @@ main {
     background-color: #df7f25;
 }
 
+@media only screen and (max-width: 767px) {
+    main {
+        width: 100%;
+    }
+    .card-post {
+        width: 95%;
+    }
+
+}

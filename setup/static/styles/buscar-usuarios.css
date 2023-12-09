@@ -73,3 +73,16 @@ form button {
 .card-usuario li {
     list-style: none;
 }
+
+@media only screen and (max-width: 767px) {
+    header {
+        position: sticky;
+    }
+    section {
+        width: 95%;
+    }
+    .lista-usuarios {
+        width: 100%;
+        height: 100%;
+    }
+}

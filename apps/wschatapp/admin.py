@@ -19,7 +19,7 @@ class CurtidaAdmin(admin.ModelAdmin):
 
 @admin.register(Rede)
 class RedeAdmin(admin.ModelAdmin):
-    list_display = ('id','usuario', 'seguido', 'seguidor')
+    list_display = ('id','usuario', 'seguido')
 
 @admin.register(PostSalvo)
 class PostSalvoAdmin(admin.ModelAdmin):

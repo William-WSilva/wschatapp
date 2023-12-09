@@ -17,7 +17,7 @@
             <ul class="lista-post">
                 <li class="card-post">
                     <div class="post-info">
-                        <img class="foto-perfil" src="{{ post.usuario.usuarioinfo.foto_perfil.url }}">
+                        <img class="foto-perfil" src="{{ post.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto Perfil">
                         <h4>{{ post.usuario }}</h4>
                         <h5>Ultima Edição: {{ post.data_hora|date:"d/m/y H:i" }}</h5>
                     </div>
@@ -29,7 +29,7 @@
                             <span>Imagem Post: </span>
                             <input type="file" id="inputFile" name="imagem" />
                         </label>
-                        <img class="foto-post" src="{{ post.imagem.url }}">
+                        <img class="foto-post" src="{{ post.imagem.url }}" alt="Foto Post">
                         <button type="submit">Salvar</button>
                     </form>
                 </li>

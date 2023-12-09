@@ -21,19 +21,27 @@
             {% endif %}
         </div>
     </div>
-    <div class="header-action">
-        {% if rota_perfil_usuario %}
-            {% if esta_seguindo %}
-            <a class="btn-red" href="{% url 'nao-seguir-usuario' outro_usuario_info.usuario.id %}">- Não Seguir</a>
+    <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
+    <label for="menu-toggle" class="menu-toggle-btn">
+        <div class="menu-toggle-lin"></div>
+        <div class="menu-toggle-lin"></div>
+        <div class="menu-toggle-lin"></div>
+    </label>
+    <div class="menu-toggle">
+        <div class="header-action">
+            {% if rota_perfil_usuario %}
+                {% if esta_seguindo %}
+                <a class="btn-red" href="{% url 'nao-seguir-usuario' outro_usuario_info.usuario.id %}">- Não Seguir</a>
+                {% else %}
+                    <a class="btn-green" href="{% url 'seguir-usuario' outro_usuario_info.usuario.id %}">+ Seguir</a>
+                {% endif %}
             {% else %}
-                <a class="btn-green" href="{% url 'seguir-usuario' outro_usuario_info.usuario.id %}">+ Seguir</a>
+                <a class="btn-green" href="{% url 'novo-post' %}">+ Novo Post</a>
             {% endif %}
-        {% else %}
-            <a class="btn-green" href="{% url 'novo-post' %}">+ Novo Post</a>
-        {% endif %}
+        </div>
+        <nav class="header-nav">
+            <a href="{% url 'config' %}">⚙️</a>
+            <a href="{% url 'perfil-pessoal' %}">🏠</a>
+        </nav>
     </div>
-    <nav class="header-nav">
-        <a href="{% url 'config' %}">⚙️</a>
-        <a href="{% url 'perfil-pessoal' %}">🏠</a>
-    </nav>
 </header>

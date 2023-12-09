@@ -13,7 +13,7 @@
         <p>{{ post.descricao }}</p>
     </details>
     <a class="link-post" href="{% url 'post-item' post.id %}">
-        <img class="foto-post" src="{{ post.imagem.url }}">
+        <img class="foto-post" src="{{ post.imagem.url }}" alt="Foto de Post">
         <span>{{ post.qtd_comentarios }} Comentário</span>
         <span>{{ post.qtd_curtidas }} Curtida</span>
     </a>

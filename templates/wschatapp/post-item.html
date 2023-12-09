@@ -27,8 +27,8 @@
                                 <details>
                                     <summary>
                                         <div class="sumary-info">
+                                            <img src="{{comentario.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto Perfil">
                                             <a class="link-usuario" href="{% url 'perfil-usuario' comentario.usuario.id %}">
-                                                <img src="{{comentario.usuario.usuarioinfo.foto_perfil.url }}" alt="">
                                                 <span>{{ comentario.usuario }}: ...</span>
                                             </a>
                                             {% if comentario.usuario == usuario %}
@@ -49,7 +49,7 @@
                             {% for curtida in curtidas_post %}
                             <li>
                                 <a class="link-usuario-curtida" href="{% url 'perfil-usuario' curtida.usuario.id %}">
-                                    <img src="{{ curtida.usuario.usuarioinfo.foto_perfil.url }}" alt="">
+                                    <img src="{{ curtida.usuario.usuarioinfo.foto_perfil.url }}" alt="Foto Perfil">
                                     <span>{{ curtida.usuario }}</span>
                                 </a>
                             </li>

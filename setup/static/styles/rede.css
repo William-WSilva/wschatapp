@@ -52,3 +52,18 @@
 .card-usuario li {
     list-style: none;
 }
+
+@media only screen and (max-width: 767px) {
+    .rede {
+        flex-direction: column;
+        align-items: center;
+        width: 95%;
+    }
+    .rede-categoria {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        margin-bottom: 8px;
+
+    }
+}
