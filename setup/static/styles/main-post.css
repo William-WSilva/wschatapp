@@ -52,6 +52,7 @@ main {
     background-color: #dbdada;
     border-radius: 4px;
     color: #175593;
+    padding: 4px;
 
 }
 
@@ -155,6 +156,11 @@ main {
     }
     .card-post {
         width: 95%;
+    }
+    .post-info {
+        flex-direction: column;
+        align-items: start;
+        height: 80px;
     }
 
 }

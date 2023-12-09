@@ -52,12 +52,12 @@ header > img {
 .header-info h3 {
     font-size: 24px;
     display: flex;
-    width: 180px;
+    width: 200px;
 }
 .header-info h4 {
     font-size: 18px;
     display: flex;
-    width: 120px;
+    width: 200px;
 }
 
 .header-action {
@@ -187,11 +187,17 @@ p > #messages {
         width: 50%;
     }
     .header-info h3 {
-        font-size: 18px;
+        font-size: 16px;
+    }
+    .header-info h4 {
+        font-size: 14px;
     }
     .header-action {
         height: 100%;
         width: 100%;    
+    }
+    .header-action a {
+        font-size: 14px;
     }
     .header-nav {
         height: 100%;
