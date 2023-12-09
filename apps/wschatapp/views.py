@@ -147,10 +147,10 @@ def MinhaRede(request):
     variaveis_globais(request)
 
     return render(request, 'wschatapp/rede.html', {
-        'usuarios_seguidos': usuarios_seguidos, 
-        'usuarios_seguidores': usuarios_seguidores, 
         'usuario':usuario, 
         'usuario_info': usuario_info,
+        'usuarios_seguidos': usuarios_seguidos, 
+        'usuarios_seguidores': usuarios_seguidores, 
         'qtd_seguidos': qtd_seguidos,
         'qtd_seguidores': qtd_seguidores,
     })
@@ -164,14 +164,18 @@ def PostItem(request, post_id):
     comentarios_post = Comentario.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo') # usuarios e comentarios do post selecionado
     curtidas_post = Curtida.objects.filter(post_id=post_id).select_related('usuario__usuarioinfo') # usuarios que curtiram o post selecionado
 
-    return render(request, 'wschatapp/post-item.html', 
-        {'usuario_info': usuario_info,
-         'post': post, 
-         'comentarios_post': comentarios_post,
-         'posts_salvos': posts_salvos,
-         'posts_curtidos': posts_curtidos,
-         'curtidas_post': curtidas_post,
-         'usuario': usuario})
+    return render(request, 'wschatapp/post-item.html', {
+        'usuario': usuario,
+        'usuario_info': usuario_info,
+        'posts': posts,
+        'post': post, 
+        'comentarios_post': comentarios_post,
+        'posts_salvos': posts_salvos,
+        'posts_curtidos': posts_curtidos,
+        'curtidas_post': curtidas_post,
+        'qtd_seguidos': qtd_seguidos,
+        'qtd_seguidores': qtd_seguidores,
+    })
 
 
 def SalvarPost(request, post_id):
