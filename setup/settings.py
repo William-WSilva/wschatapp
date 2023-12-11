@@ -125,11 +125,12 @@ AWS_HEADERS = {'Access-Control-Allow-Origin': '*'}
 # Armazenamento no AWS S3 para arquivos estáticos
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-STATIC_ROOT = 'static'  # Diretório onde os arquivos estáticos serão coletados no S3
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'setup/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Diretório onde os arquivos estáticos serão coletados no S3
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'  # URL para os arquivos estáticos
 
 # Media
-MEDIA_ROOT = 'media'  # Diretório onde os arquivos de mídia serão armazenados localmente
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Diretório onde os arquivos de mídia serão armazenados localmente
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'  # URL para os arquivos de mídia
 
 
