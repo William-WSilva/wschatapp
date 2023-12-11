@@ -299,9 +299,9 @@ def SalvarPostEditado(request, post_id):
                 return HttpResponseBadRequest('O arquivo enviado não é uma imagem válida.')
         post.save()
 
-        return redirect('perfil-pessoal')
+        return redirect('meus-posts')
 
-    return render(request, 'wschatapp/perfil-pessoal.html')
+    return render(request, 'wschatapp/meus-posts.html')
 
 
 def DeletarPost(request, post_id):
