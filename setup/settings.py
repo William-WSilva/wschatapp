@@ -125,7 +125,7 @@ AWS_HEADERS = {'Access-Control-Allow-Origin': '*'}
 # Armazenamento no AWS S3 para arquivos estáticos
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-STATIC_ROOT = 'staticfiles'  # Diretório onde os arquivos estáticos serão coletados no S3
+STATIC_ROOT = 'static'  # Diretório onde os arquivos estáticos serão coletados no S3
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'  # URL para os arquivos estáticos
 
 # Media
