@@ -53,6 +53,7 @@ header > img {
     font-size: 24px;
     display: flex;
     width: 200px;
+    margin-right: 16px;
 }
 .header-info h4 {
     font-size: 18px;

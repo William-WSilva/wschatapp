@@ -4,8 +4,10 @@
 
  📜 Este é um aplicativo de postagem de imagens desenvolvido utilizando HTML, CSS, Django e Docker, com integração de um banco de dados PostgreSQL. Possui mais de 10 telas, incluindo funcionalidades como login, cadastro, publicação de posts, alteração de dados cadastrais, busca de usuários, rede de seguidores, postagens salvas, entre outras.
 
+<a href="https://projeto-wschatapp-8e4668852be4.herokuapp.com/" target="_blank">
 Acesse o app: https://projeto-wschatapp-8e4668852be4.herokuapp.com/
-
+</a>
+<hr>
 <img src="./setup/static/assets/img/wschatapp4.png" width="600px" height="800px" alt="">
 
  ## ⚛️ Tecnologias Utilizadas
