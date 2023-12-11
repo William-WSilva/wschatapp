@@ -16,7 +16,7 @@ Acesse o app: https://projeto-wschatapp-8e4668852be4.herokuapp.com/
 3. Django
 4. Docker
 5. PostgreSQL
-6. Heroku (para deploy)
+6. Heroku (para deploy).
 
 ## Funcionalidades Principais
 
