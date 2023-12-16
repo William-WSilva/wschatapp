@@ -13,7 +13,7 @@ SECRET_KEY = "django-insecure-yskg!_(rz_!k^c%n5fxl!tgde8j!6wn5t4=078ss&-xe676z"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'projeto-wschatapp-8e4668852be4.herokuapp.com']
 CSRF_TRUSTED_ORIGINS = ['https://projeto-wschatapp-8e4668852be4.herokuapp.com',]
