@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: adminadmin
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backups:/docker-entrypoint-initdb.d  # Restaura automaticamente se banco estiver vazio
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d  # <- restaura o banco
     ports:
       - "5432:5432"
 
