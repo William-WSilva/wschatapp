@@ -9,14 +9,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY", "chave-insegura-dev")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", "0") == "1"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'projeto-wschatapp-8e4668852be4.herokuapp.com']
-CSRF_TRUSTED_ORIGINS = ['https://projeto-wschatapp-8e4668852be4.herokuapp.com',]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{host}" 
+    for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ") 
+    if host not in ("localhost", "127.0.0.1", "")
+]
 
 # Application definition
 
@@ -29,8 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.wschatapp.apps.WschatappConfig",
     "apps.usuarios.apps.UsuariosConfig",
-    'debug_toolbar',
-    'storages',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -111,27 +114,17 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Configurações do AWS S3 para arquivos estáticos
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-AWS_LOCATION = 'static'
-AWS_QUERYSTRING_AUTH = False
-AWS_HEADERS = {'Access-Control-Allow-Origin': '*'}
-
-# Armazenamento no AWS S3 para arquivos estáticos
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+# Arquivos estáticos (CSS, JS, imagens do front)
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'setup/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')  # Diretório onde os arquivos estáticos serão coletados no S3
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'  # URL para os arquivos estáticos
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
-# Media
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Diretório onde os arquivos de mídia serão armazenados localmente
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'  # URL para os arquivos de mídia
+# Arquivos de mídia (imagens enviadas por usuários)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+# Whitenoise para servir estáticos em produção
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 

@@ -1,18 +1,32 @@
-version: '3'
+version: '3.8'
 
 services:
   db:
-    image: postgres:latest
-    container_name: container-wschatapp  # Define o nome do contêiner como container-wschatapp
+    image: postgres:15
+    container_name: container-wschatapp
     environment:
-      POSTGRES_DB: wschatappdb  # Nome do banco de dados PostgreSQL
-      POSTGRES_USER: wsilva    # Nome de usuário do PostgreSQL
-      POSTGRES_PASSWORD: adminadmin  # Senha do PostgreSQL
+      POSTGRES_DB: wschatappdb
+      POSTGRES_USER: wsilva
+      POSTGRES_PASSWORD: adminadmin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/docker-entrypoint-initdb.d  # Restaura automaticamente se banco estiver vazio
+    ports:
+      - "5432:5432"
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    container_name: wschatapp-web
+    command: ./entrypoint.sh
+    volumes:
+      - .:/app
+      - ./backups:/app/backups  # Para exportar backups
     ports:
-      - "8000:8000"
+      - "8010:8000"
+    env_file:
+      - .env
     depends_on:
       - db
+
+volumes:
+  postgres_data:

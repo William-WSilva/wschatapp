@@ -1,21 +1,27 @@
 # Use uma imagem base do Python
-FROM python:3.8
+FROM python:3.11-slim  
 
-# Defina o diretório de trabalho no contêiner
+# Define encoding e desativa bytecode .pyc
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Define o diretório de trabalho no contêiner
 WORKDIR /app
 
-# Copie o requirements.txt para o contêiner e instale as dependências
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+# Instala dependências do sistema necessárias (ex: para psycopg2)
+RUN apt-get update && apt-get install -y \
+    netcat-openbsd gcc postgresql-client libpq-dev \
+    && apt-get clean
 
-# Copie o código do projeto para o contêiner
-COPY . /app/
+# Copia e instala dependências Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copie o entrypoint.sh para o contêiner
-COPY entrypoint.sh /app/entrypoint.sh
+# Copia o restante do código da aplicação
+COPY . .
 
-# Defina permissões de execução para o entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+# Permissão para o entrypoint
+RUN chmod +x entrypoint.sh
 
-# Comando para iniciar o servidor usando o entrypoint
-CMD ["./entrypoint.sh"]
+# Define o entrypoint
+ENTRYPOINT ["./entrypoint.sh"]

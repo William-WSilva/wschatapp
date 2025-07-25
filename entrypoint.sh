@@ -1,22 +1,20 @@
 #!/bin/bash
 
-# Inicia o servidor Django
-echo "Iniciando o servidor Django"
-python manage.py runserver 0.0.0.0:8000 &
+echo "Inicializando aplicação Django..."
 
-# Aguarda o servidor estar pronto
-echo "Aguardando o servidor estar pronto..."
-sleep 10
-
-# Executa as migrações
-echo "Executando as migrações"
-python manage.py makemigrations
-python manage.py migrate
+# Aplica migrações
+echo "Aplicando migrações..."
+python manage.py makemigrations --noinput
+python manage.py migrate --noinput
 
 # Coleta arquivos estáticos
-echo "Coletando arquivos estáticos"
+echo "Coletando arquivos estáticos..."
 python manage.py collectstatic --no-input
 
-# Mantém o contêiner em execução
-echo "Contêiner em execução"
-tail -f /dev/null
+# Backup do banco local Postgres (dentro do container)
+echo "Criando backup do banco de dados..."
+pg_dump -U postgres -d postgres > /app/backups/backup_$(date +%Y%m%d_%H%M%S).sql
+
+# Inicia o servidor
+echo "Iniciando o servidor Django na porta 8000..."
+python manage.py runserver 0.0.0.0:8000
