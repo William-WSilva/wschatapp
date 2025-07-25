@@ -1,89 +1,101 @@
 # WsChatApp
-### Descrição
 
+### 📜 Descrição
 
- 📜 Este é um aplicativo de postagem de imagens desenvolvido utilizando HTML, CSS, Django e Docker, com integração de um banco de dados PostgreSQL. Possui mais de 10 telas, incluindo funcionalidades como login, cadastro, publicação de posts, alteração de dados cadastrais, busca de usuários, rede de seguidores, postagens salvas, entre outras.
+Este é um aplicativo de postagem de imagens desenvolvido com HTML, CSS, Django, Docker e PostgreSQL. Possui mais de 10 telas e funcionalidades como:
 
+- Login e cadastro
+- Publicação de posts com imagens
+- Alteração de dados cadastrais
+- Busca de usuários
+- Rede de seguidores
+- Postagens salvas
 
-Acesse o app: https://projeto-wschatapp-8e4668852be4.herokuapp.com/
+---
 
-<hr>
-<img src="./setup/static/assets/img/wschatapp4.png" width="600px" height="800px" alt="">
+<img src="./setup/static/assets/img/wschatapp4.png" width="600px" alt="Tela do WsChatApp">
 
- ## ⚛️ Tecnologias Utilizadas
-1. HTML
-2. CSS
-3. Django
-4. Docker
-5. PostgreSQL
-6. Heroku (para deploy).
+## ⚛️ Tecnologias Utilizadas
 
-## Funcionalidades Principais
+- HTML + CSS
+- Django
+- Docker
+- PostgreSQL
+- Railway (para deploy)
 
-1. **Autenticação e Segurança**
+---
 
-    - 💡 Utilização dos recursos de segurança do Django, incluindo:
+## 🐳 Como executar localmente com Docker
 
-        - Autenticação de usuários
-        - Autorização de acesso a diferentes recursos
-        - Proteção contra CSRF (Cross-Site Request Forgery)
-        - Entre outros recursos de segurança disponibilizados pelo framework.
+### 1. Clonar o repositório
 
-2. **Docker e Segurança**
-
-    - Utilização de containers Docker para isolamento e facilitar a implantação do aplicativo.
-
-    - Vantagens incluem:
-        - Portabilidade
-        - Consistência de ambiente entre - - desenvolvimento e produção
-        - Controle de recursos e escalabilidade
-        - Isolamento de processos e segurança - aprimorada.
-
- 3. **Integração com Back-end e Validação de Formulários**
-
-    - Conexão entre o front-end e back-end utilizando Django para fornecer uma experiência contínua ao usuário.
-    - Implementação de validações de formulários para garantir a integridade dos dados recebidos.
-
-4. **Deploy na Plataforma Heroku**
-
-    - O aplicativo foi implantado com sucesso na plataforma Heroku, permitindo acesso online ao projeto.
-
-## Deploy no Heroku
-1. Configuração Inicial
-
-    - Faça login na sua conta do Heroku.
-    - Crie um novo aplicativo no painel do Heroku.
-
-2. **Configuração das Variáveis de Ambiente no Heroku**
-
-    - No painel do seu aplicativo no Heroku, navegue para a seção de configurações.
-    - Configure as variáveis de ambiente necessárias conforme o seu projeto (chaves de acesso, configurações específicas). Isso pode incluir informações do banco de dados, chaves de API, etc.
-
-3. **Push do Projeto para o Heroku**
-
-
-```
-git remote add heroku https://git.heroku.com/seu-aplicativo.git
-git push heroku main
+```bash
+git clone https://github.com/seu-usuario/seu-repo.git
+cd seu-repo
 ```
 
-4. Acesso ao Container no Heroku 
+## Acessar ambiente virtual
 
-    - Após o deploy bem-sucedido, acesse um terminal e execute:
+### 2. Acesse o ambiente virtual, senão crie e acesse
+```bash
+# criarambiente virtual
+python -m venv venv
 
-```
-heroku run bash -a seu-aplicativo
-```
-5. **Execução de Migrações e Arquivos Estáticos**
-
-    - Dentro do container do Heroku:
-
-```
-python manage.py makemigrations
-python manage.py migrate
-python manage.py collectstatic
+# acessar ambiente virtual
+source venv/Scripts/activate
 ```
 
-6. Acesso ao Aplicativo no Heroku
 
-Acesse o Heroku e confirme a disponibilidade do app online no servidoe Heroku.
+##  2. Criar variaveis ambiente .env
+
+Crie um arquivo .env com o conteúdo:
+
+```bash
+# .env
+DEBUG=1
+SECRET_KEY=xxx
+DJANGO_ALLOWED_HOSTS=xxx
+DATABASE_ENGINE=django.db.backends.postgresql
+DATABASE_NAME=xxx
+DATABASE_USER=xxx
+DATABASE_PASSWORD=xxx
+DATABASE_HOST=db
+DATABASE_PORT=5432
+```
+
+## 3. Subir os containers Docker
+
+```bash
+# Iniciar aplicação
+docker-compose up --build
+
+# Parar aplicação
+docker-compose down
+```
+
+Isso irá: 
+- Subir o banco PostgreSQL local
+- Aplicar migrações
+- Coletar arquivos estáticos
+- Rodar o servidor Django na porta 8010
+
+### Acesse em: http://localhost:8010
+
+
+## ATENÇÃO!!! Fazer Backup do Banco de Dados:
+
+Fazer um backup do banco de dados e desligar aplicação, será executado comandos do arquivo 
+``Makefile``
+
+ATENÇÃO!!! -> Antes de parar a aplicação execute o backup do banco para não perder dados.
+- Com a aplicação rodando acesse um terminal e rode:
+
+```bash
+# comando para gerar o backup na pasta: backups/
+1. docker exec -t container-wschatapp pg_dump -U wsilva -d wschatappdb > backups/initial_dump.sql
+
+# comando para copiar o backup para a pasta: docker-entrypoint-initdb.d/
+2. cp backups/initial_dump.sql docker-entrypoint-initdb.d/initial_dump.sql
+```
+
+
