@@ -1,0 +1,1 @@
+web: gunicorn wschatapp.wsgi --log-file -

@@ -2,10 +2,11 @@
 
 echo "Inicializando aplicação Django..."
 
-echo "Aguardando o PostgreSQL iniciar..."
-while ! nc -z db 5432; do
+echo "Aguardando banco de dados estar disponível..."
+while ! nc -z $DATABASE_HOST $DATABASE_PORT; do
   sleep 1
 done
+echo "Banco de dados disponível!"
 
 echo "PostgreSQL está no ar — iniciando comandos do Django..."
 
