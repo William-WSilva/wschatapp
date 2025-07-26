@@ -112,3 +112,16 @@ docker exec -t container-wschatapp pg_dump -U wsilva -d wschatappdb > docker-ent
 ```
 
 
+## Para o deploy na Railway 
+
+1. Crie uma conta em https://railway.app
+2. Clique em "New Project" → "Deploy from GitHub Repo"
+3. Escolha este repositório
+4. Na tela do projeto clique em adicionar > Data Base > PostgreSQL
+5. No PostgreSQL copie as variáveis de conexão, como:
+- DATABASE_HOST     -> PGHOST       ?
+- DATABASE_NAME     -> PGDATABASE   ?
+- DATABASE_USER     -> PGUSER       ?
+- DATABASE_PASSWORD -> PGPASSWORD   ?
+- DATABASE_PORT     -> PGPORT       ?
+6. No projeto principal salve todas as variaveis ambiente necesárias + as do novo banco de dados PostgreSQL
