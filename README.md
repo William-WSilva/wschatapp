@@ -90,7 +90,6 @@ Isso irá:
 
 ## ATENÇÃO!!! Fazer Backup do Banco de Dados:
 
-
 ATENÇÃO!!! -> Antes de parar a aplicação execute o backup do banco para não perder dados.
 - Com a aplicação rodando acesse um terminal e rode:
 
