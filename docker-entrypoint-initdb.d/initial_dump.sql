@@ -538,7 +538,7 @@ COPY public.auth_user (id, password, last_login, is_superuser, username, first_n
 4	pbkdf2_sha256$1000000$yEAnhTxV4vyCMtU3mmcrjt$dJoRcWiwUicw+W8JYHQfJ+G7TdEgo6r3Zrcr7a/581M=	2025-07-25 18:29:54.8889+00	f	Rose		Ferreira	emailtest3@gmail.com	f	t	2025-07-25 18:29:50.002065+00
 5	pbkdf2_sha256$1000000$gwsYz1JnghZPRCkNadcIzb$Cl9fK0QLte28YmabFnn6Zm0a9Dh5cncphjKfHUpp0J0=	2025-07-25 18:34:58.281138+00	f	David		Silva	emailtest4@gmail.com	f	t	2025-07-25 18:34:45.571479+00
 1	pbkdf2_sha256$1000000$nWyoHgiF4rwl1XYpFYQvtO$INRh1YCFZXLfzdZ+QNKz2O+WBKEyqRbod4TQl4Hlj3U=	2025-07-25 18:47:01.026354+00	t	WilliamWSilva			williamreis.wsilva@gmail.com	t	t	2025-07-25 18:06:17.870362+00
-2	pbkdf2_sha256$1000000$8f9ahb10fA0u81TGuirxWW$pme9M5Gnz/ev+mYo+0zMcVWzbYZ8KPiebqIkA3iferY=	2025-07-25 20:18:39.306021+00	f	Wsilva		Silva	emailtest@gmail.com	f	t	2025-07-25 18:10:34.216599+00
+2	pbkdf2_sha256$1000000$8f9ahb10fA0u81TGuirxWW$pme9M5Gnz/ev+mYo+0zMcVWzbYZ8KPiebqIkA3iferY=	2025-07-26 22:18:38.175495+00	f	Wsilva		Silva	emailtest@gmail.com	f	t	2025-07-25 18:10:34.216599+00
 \.
 
 
@@ -629,6 +629,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 mdgzybl0j2xio2kv9rzmkpvkflv41f51	.eJxVjEEOwiAQRe_C2hCGqcC4dN8zECiDVA0kpV0Z765NutDtf-_9l_BhW4vfOi9-TuIitDj9bjFMD647SPdQb01Ora7LHOWuyIN2ObbEz-vh_h2U0Mu35nMGZkyMVqWsnLbKOZNREThjnGEViYbAeoBoIwaHymagODASAJJ4fwDUOjb1:1ufOsJ:YABLSmlSA-UlySzTGIZwLBvMQzr5f0_7ry1UdisegnM	2025-08-08 20:18:39.32779+00
+nitr0w6wjfsupchqtncd6a20l8qwfh5z	.eJxVjEEOwiAQRe_C2hCGqcC4dN8zECiDVA0kpV0Z765NutDtf-_9l_BhW4vfOi9-TuIitDj9bjFMD647SPdQb01Ora7LHOWuyIN2ObbEz-vh_h2U0Mu35nMGZkyMVqWsnLbKOZNREThjnGEViYbAeoBoIwaHymagODASAJJ4fwDUOjb1:1ufnDx:GTq5r1-VFj9bWeL4TX0BmD-9vRrEEbYPHHiAheYtmFM	2025-08-09 22:18:37.557732+00
 \.
 
 

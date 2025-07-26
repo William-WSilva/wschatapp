@@ -66,11 +66,17 @@ DATABASE_PORT=5432
 ## 3. Subir os containers Docker
 
 ```bash
-# Iniciar aplicação
+# !!! Somente Primeira vez ou quando mudar Dockerfile/dependências:
 docker-compose up --build
 
-# Parar aplicação
+# Para subir a aplicação (sem mudanças na imagem):
+docker-compose up
+
+# Para parar a aplicação:
 docker-compose down
+
+# Para parar e excluir volumes (zera o banco):
+docker-compose down -v
 ```
 
 Isso irá: 
@@ -84,18 +90,14 @@ Isso irá:
 
 ## ATENÇÃO!!! Fazer Backup do Banco de Dados:
 
-Fazer um backup do banco de dados e desligar aplicação, será executado comandos do arquivo 
-``Makefile``
 
 ATENÇÃO!!! -> Antes de parar a aplicação execute o backup do banco para não perder dados.
 - Com a aplicação rodando acesse um terminal e rode:
 
 ```bash
-# comando para gerar o backup na pasta: backups/
-1. docker exec -t container-wschatapp pg_dump -U wsilva -d wschatappdb > backups/initial_dump.sql
+# Criar backup do banco para restauração automática
+docker exec -t container-wschatapp pg_dump -U wsilva -d wschatappdb > docker-entrypoint-initdb.d/initial_dump.sql
 
-# comando para copiar o backup para a pasta: docker-entrypoint-initdb.d/
-2. cp backups/initial_dump.sql docker-entrypoint-initdb.d/initial_dump.sql
 ```
 
 

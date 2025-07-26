@@ -1,1 +1,0 @@
-\i '/docker-entrypoint-initdb.d/initial_dump.sql'
