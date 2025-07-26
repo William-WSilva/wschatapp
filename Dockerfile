@@ -23,5 +23,8 @@ COPY . .
 # Permissão para o entrypoint
 RUN chmod +x entrypoint.sh
 
+# Expõe a porta 8000
+EXPOSE 8000
+
 # Define o entrypoint
 ENTRYPOINT ["./entrypoint.sh"]
