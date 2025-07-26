@@ -17,13 +17,25 @@ Este é um aplicativo de postagem de imagens desenvolvido com HTML, CSS, Django,
 
 ## ⚛️ Tecnologias Utilizadas
 
-- HTML + CSS
+- HTML & CSS
 - Django
-- Docker
 - PostgreSQL
-- Railway (para deploy)
+- Docker
+- Railway (Deploy)
+- Git & GitHub
 
 ---
+
+
+## 🚀 Rodando Localmente
+
+### Pré-requisitos
+
+- Git
+- Docker
+- Python 3.11 (apenas se rodar sem Docker)
+
+
 
 ## 🐳 Como executar localmente com Docker
 
@@ -79,7 +91,7 @@ docker-compose down
 docker-compose down -v
 ```
 
-Isso irá: 
+O comando docker-compose up --build irá: 
 - Subir o banco PostgreSQL local
 - Aplicar migrações
 - Coletar arquivos estáticos
