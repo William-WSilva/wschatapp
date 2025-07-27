@@ -12,9 +12,12 @@ echo "⚙️ Aplicando migrações do Django..."
 python manage.py makemigrations --noinput
 python manage.py migrate --noinput
 
-# Verifica e restaura o dump somente se o banco estiver vazio
+# Verifica se deve restaurar dump, mesmo com dados existentes
 DUMP_FILE="docker-entrypoint-initdb.d/initial_dump.sql"
-if [ -f "$DUMP_FILE" ]; then
+if [ "$FORCE_RESTORE" == "true" ] && [ -f "$DUMP_FILE" ]; then
+  echo "⚠️ FORÇANDO importação dos dados de $DUMP_FILE..."
+  PGPASSWORD=$DATABASE_PASSWORD psql -h $DATABASE_HOST -U $DATABASE_USER -d $DATABASE_NAME -f "$DUMP_FILE"
+elif [ -f "$DUMP_FILE" ]; then
   echo "🔍 Verificando se o banco está vazio para importar dados..."
   USER_COUNT=$(PGPASSWORD=$DATABASE_PASSWORD psql -h $DATABASE_HOST -U $DATABASE_USER -d $DATABASE_NAME -tAc "SELECT COUNT(*) FROM auth_user;")
 
