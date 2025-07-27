@@ -107,7 +107,7 @@ ATENÇÃO!!! -> Antes de parar a aplicação execute o backup do banco para não
 
 ```bash
 # Criar backup do banco para restauração automática
-docker exec -t container-wschatapp pg_dump -U wsilva -d wschatappdb > docker-entrypoint-initdb.d/initial_dump.sql
+docker exec -t container-wschatapp pg_dump -U wsilva -d wschatappdb --data-only --column-inserts > docker-entrypoint-initdb.d/initial_dump.sql
 
 ```
 
