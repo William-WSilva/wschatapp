@@ -19,6 +19,6 @@ python manage.py migrate --noinput
 echo "Coletando arquivos estáticos..."
 python manage.py collectstatic --no-input
 
-# Inicia o servidor
-echo "Iniciando o servidor Django na porta 8000..."
-python manage.py runserver 0.0.0.0:8000
+# Inicia o servidor com Gunicorn
+echo "Iniciando o servidor Django na porta 8000 com Gunicorn..."
+gunicorn setup.wsgi:application --bind 0.0.0.0:8000 --log-file -
