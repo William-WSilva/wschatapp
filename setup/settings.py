@@ -18,7 +18,7 @@ DEBUG = os.environ.get("DEBUG", "0") == "1"
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 CSRF_TRUSTED_ORIGINS = [
     f"https://{host}" 
-    for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(" ") 
+    for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") 
     if host not in ("localhost", "127.0.0.1", "")
 ]
 
