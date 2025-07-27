@@ -11,7 +11,7 @@ __localcode
 *.pyc
 __pycache__
 db.sqlite3
-media
+# media
 
 # Backup files # 
 *.bak 
