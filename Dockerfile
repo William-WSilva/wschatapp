@@ -19,6 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia o restante do código da aplicação
 COPY . .
+COPY ./media /app/media
 
 # Permissão para o entrypoint
 RUN chmod +x entrypoint.sh

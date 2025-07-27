@@ -20,7 +20,8 @@ services:
     volumes:
       - .:/app
       - ./backups:/app/backups  # Para exportar backups
-      - ./docker-entrypoint-initdb.d:/app/docker-entrypoint-initdb.d  # 👈 Aqui montamos o dump para o Django
+      - ./docker-entrypoint-initdb.d:/app/docker-entrypoint-initdb.d
+      - ./media:/app/media
     ports:
       - "8010:8000"
     env_file:
